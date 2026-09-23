@@ -1,0 +1,6 @@
+{%- extends "base.html" -%}
+{%- set nav = '' -%}
+{%- block title %}Page not found — {{ site.name }}{% endblock -%}
+{%- block body -%}
+<header class="mast"><div><h1>Page not found</h1><p>That page doesn't exist. Try the <a href="{{ root }}">latest edition</a> or the <a href="{{ root }}archive/">archive of past editions</a>.</p></div></header>
+{%- endblock -%}

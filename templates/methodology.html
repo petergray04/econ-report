@@ -1,0 +1,52 @@
+{%- extends "base.html" -%}
+{%- set nav = 'method' -%}
+{%- block title %}Methodology — {{ site.name }}{% endblock -%}
+{%- block description %}Sources, consensus policy, the first-print rule and disclaimer for the weekly U.S. Economic Indicators report.{% endblock -%}
+{%- block body -%}
+<header class="mast"><div><h1>Methodology</h1><p>How each number in the report is sourced, and what the colors mean.</p></div></header>
+<article class="prose">
+
+<h2>What the report shows</h2>
+<p>About 45 U.S. indicators in five sections: labor market, personal/household sector, industrial and manufacturing, housing, and inflation. Every indicator shows its <b>two most recent releases</b>. Each release has the period, the consensus forecast and the actual figure. Every row links to the agency or publisher that produced the number. Below the tables are GDP, published forecasts and targets, and market levels. A new edition is published every Monday. Each edition states the date its market data runs through.</p>
+
+<h2>Actuals are first prints</h2>
+<p>The <b>Actual</b> column is the value as first published on release day. It is not today's revised value. For series on FRED we take it from the ALFRED vintage archive, which stores what each series showed on each date. We then cross-check it against the agency's release. When a later release revises a figure, the first print stays in the table and the revision goes in <b>Notes</b> (for example, “Jul rev. to +21K”).</p>
+
+<h2>Year-over-year changes are computed by date</h2>
+<p>A year-over-year change compares a month with the <em>same month a year earlier</em>. It never compares with a fixed number of rows back. This matters because FRED has no October 2025 observation for several series, owing to the federal government shutdown. Counting back 12 rows would silently compare against the wrong month. If a computed figure ever differs from the percentage in the agency's release text, the release text wins.</p>
+
+<h2>Consensus</h2>
+<p>Consensus figures come from the first available source in this order:</p>
+<ol>
+<li><b>Bloomberg survey median</b>, as quoted in First Trust's <a href="https://www.ftportfolios.com/Commentary/EconomicResearch/">Data Watch</a> commentary.</li>
+<li>Otherwise <b>Dow Jones</b> (via CNBC), <b>Reuters/LSEG</b> or <b>FactSet</b>. The Notes column names the source when one of these is used.</li>
+<li>Otherwise no consensus is shown, and the cell reads <b>“—”</b>. <b>We never estimate or fill in a consensus figure.</b></li>
+</ol>
+
+<h2>Colors</h2>
+<p><span class="beat">Green</span> means the actual came in better than consensus. <span class="miss">Rust</span> means worse. For inflation, jobless claims and unemployment, <em>lower</em> is better. Rows with no consensus, or where neither direction is clearly better (such as mortgage rates), are not colored.</p>
+
+<h2>Markets, forecasts and targets</h2>
+<ul>
+<li><b>Equity indexes</b> (S&amp;P 500, Dow Jones, NASDAQ Composite): FRED series <code>SP500</code>, <code>DJIA</code>, <code>NASDAQCOM</code>.</li>
+<li><b>International equities</b>: iShares EFA and EEM ETF prices.</li>
+<li><b>Treasury yields</b>: 10- and 30-year constant-maturity yields, FRED <code>DGS10</code> and <code>DGS30</code>.</li>
+<li>Returns are <b>price returns</b> (excluding dividends), measured from the end-2025 close.</li>
+<li><b>IMF</b> growth forecasts come from the latest World Economic Outlook or WEO Update.</li>
+<li><b>Morgan Stanley</b> targets are taken from public press reporting of Morgan Stanley research only. Confirm them against internal research before client use.</li>
+<li><b>Existing home sales</b> are NAR data, taken directly from NAR's releases.</li>
+</ul>
+
+<h2>Sources</h2>
+<p>Primary sources used in the {{ d.edition_label }} edition:</p>
+<div class="scroll"><table class="srctable"><thead><tr><th>Source</th><th>Used in</th><th>Link</th></tr></thead><tbody>
+{%- for s in sources %}<tr><th scope="row">{{ s.src }}</th><td>{{ s.sections | join(', ') }}</td><td><a href="{{ s.url }}">{{ s.url | replace('https://', '') | truncate(60, true, '…') }}</a></td></tr>{% endfor -%}
+<tr><th scope="row">FRED / ALFRED</th><td>First-print vintages, market indexes, Treasury yields</td><td><a href="https://fred.stlouisfed.org/">fred.stlouisfed.org</a></td></tr>
+<tr><th scope="row">BEA · Atlanta Fed · BLS</th><td>GDP, GDPNow, unit labor costs, ECI</td><td><a href="https://www.bea.gov/data/gdp/gross-domestic-product">bea.gov</a> · <a href="https://www.atlantafed.org/cqer/research/gdpnow">atlantafed.org</a></td></tr>
+<tr><th scope="row">IMF</th><td>World Economic Outlook forecasts</td><td><a href="https://www.imf.org/en/Publications/WEO">imf.org/en/Publications/WEO</a></td></tr>
+</tbody></table></div>
+
+<h2>Disclaimer</h2>
+<p>This report is for information only. It is <b>not investment advice</b> and not a recommendation to buy or sell any security. Figures come from public sources believed to be reliable, but errors are possible and data are subject to revision by the publishing agencies. Verify figures against the linked primary sources before relying on them.</p>
+</article>
+{%- endblock -%}

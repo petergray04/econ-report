@@ -2,9 +2,12 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{% block title %}{{ site.name }}{% endblock %}</title>
-{%- block meta %}{% endblock %}
+<meta name="description" content="{% block description %}Weekly U.S. economic indicators: the two most recent releases for every indicator, consensus vs. actual, each linked to its primary source. Published every Monday.{% endblock %}">
+<meta name="color-scheme" content="light dark">
 <link rel="stylesheet" href="{{ fonts_url }}">
 <link rel="stylesheet" href="{{ root }}assets/site.css">
 </head><body><div class="wrap">
+<nav class="topnav" aria-label="Site"><a class="brand" href="{{ root }}">{{ site.name }}</a><span class="links"><a href="{{ root }}"{% if nav == 'latest' %} aria-current="page"{% endif %}>Latest</a><a href="{{ root }}archive/"{% if nav == 'archive' %} aria-current="page"{% endif %}>Archive</a><a href="{{ root }}methodology/"{% if nav == 'method' %} aria-current="page"{% endif %}>Methodology</a></span></nav>
 {% block body %}{% endblock %}
+<footer class="sitefoot"><span>{{ site.name }} · published every Monday</span><span>Not investment advice. <a href="{{ root }}methodology/">Sources &amp; method</a></span></footer>
 </div></body></html>

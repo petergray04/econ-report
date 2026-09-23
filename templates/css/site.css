@@ -35,3 +35,30 @@ table.mini th,table.mini td{font-size:12.5px;padding:4px 6px}table.mini thead th
 .archive li a:hover{text-decoration:underline}
 .dl{font:500 12px "IBM Plex Sans",sans-serif;background:none;border:1px solid var(--rule);color:var(--ink);border-radius:3px;padding:3px 10px;text-decoration:none;cursor:pointer}
 @media(max-width:880px){.kpis{grid-template-columns:repeat(2,1fr)}.kpi{border-bottom:1px solid var(--rule)}.bottom,.sw{grid-template-columns:1fr}header.mast{grid-template-columns:1fr}.cta{align-items:flex-start}.archive ol{columns:1}}
+/* multi-page site chrome */
+.topnav{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;font-size:13px;padding-bottom:10px;margin-bottom:18px;border-bottom:1px solid var(--rule)}
+.topnav a{text-decoration:none;color:var(--ink2)}
+.topnav .brand{font-family:"Source Serif 4",Georgia,serif;font-weight:600;color:var(--ink);letter-spacing:.2px}
+.topnav .links{display:flex;gap:18px}
+.topnav .links a[aria-current]{color:var(--ink);border-bottom:2px solid var(--accent)}
+.topnav a:hover{color:var(--ink)}
+.banner{margin:0 0 16px;padding:9px 12px;background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--accent);font-size:13.5px}
+.banner a{font-weight:600}
+.archive h2{font-size:24px;margin-bottom:8px}
+.archive .more{font-size:13.5px;margin:10px 0 0}
+.archive.full ol{columns:1}
+.archive.full li{gap:16px}
+.archive.full li>div{display:flex;flex-direction:column;gap:2px;min-width:0}
+.glance{font-size:12px;color:var(--muted)}
+.glance b{font-family:"IBM Plex Mono",Menlo,monospace;font-weight:600;color:var(--ink2)}
+.prose{max-width:75ch;margin-top:20px;line-height:1.6;font-size:15px}
+.prose h2{font-size:21px;margin:28px 0 8px}
+.prose p,.prose li{margin:0 0 10px}
+.prose code{font-family:"IBM Plex Mono",Menlo,monospace;font-size:13px;background:var(--soft);padding:1px 4px;border-radius:2px}
+.srctable{min-width:560px;margin:6px 0 10px}
+.srctable th,.srctable td{text-align:left;font-size:13px;padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+.srctable thead th{font-size:11px;color:var(--muted)}
+.srctable a{word-break:break-all}
+.sitefoot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:40px;padding-top:12px;border-top:1px solid var(--rule);font-size:12px;color:var(--muted)}
+.mast p a{font-weight:600}
+@media(max-width:880px){.wrap{padding:18px 16px 40px}.archive.full li{align-items:flex-start}}

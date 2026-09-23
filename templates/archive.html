@@ -1,0 +1,14 @@
+{%- extends "base.html" -%}
+{%- set nav = 'archive' -%}
+{%- block title %}Past editions — {{ site.name }}{% endblock -%}
+{%- block body -%}
+<header class="mast"><div><h1>Past editions</h1><p>Every weekly edition, newest first. Each has a web version and a two-page PDF.</p></div></header>
+{%- for year, items in archive | groupby('year') | reverse %}
+<section class="archive full"><h2>{{ year }}</h2><ol>
+{#- groupby sorts stably, so items keep the newest-first order of `archive` #}
+{%- for a in items %}
+<li><div><a href="{{ root }}editions/{{ a.edition }}/">{{ a.label }}</a><span class="glance">{% for k in a.kpis %}{{ k.label }} <b>{{ k.value }}</b>{{ ' · ' if not loop.last }}{% endfor %}</span></div><a class="dl" href="{{ root }}{{ pdf_path(a.edition) }}" download>PDF</a></li>
+{%- endfor %}
+</ol></section>
+{%- endfor %}
+{%- endblock -%}
