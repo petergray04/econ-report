@@ -1,168 +1,131 @@
 #!/usr/bin/env python3
-"""Monday step 1 — pull the two most recent FIRST-PRINT actuals for every FRED-covered row.
+"""Pull FIRST-PRINT actuals from FRED/ALFRED for every FRED-covered row.
 
-  python3 fetch_actuals.py            -> writes out/actuals_YYYY-MM-DD.csv and prints a checklist
+  python3 fetch_actuals.py                         # latest two releases per row -> out/actuals_<today>.csv
+  python3 fetch_actuals.py CPI Payrolls            # only rows whose key contains these words
+  python3 fetch_actuals.py --check data/2026-09-23.json
+        # regression test: recompute every FRED-covered row of that edition for ITS periods
+        # and compare with the published numbers (exit 1 on any mismatch)
 
-Method
-- Values come from ALFRED vintages (what the series showed on release day), so they match
-  what was reported, not today's revised number. Revised current values are shown alongside.
-- YoY is computed BY DATE (same month a year earlier), never "12 rows back": FRED has a
-  missing Oct-2025 observation (government shutdown) that breaks row-offset math.
-- Series not on FRED (ISM, NFIB, NAHB, LEI, UMich prelim, MBA, pending home sales) and ALL
-  consensus figures are entered by hand from the sources listed in RUNBOOK.md.
-- No API key needed. Network access to fred.stlouisfed.org and alfred.stlouisfed.org required.
+Set FRED_API_KEY (env or a git-ignored .env file) for exact release-day vintages; without a key the
+script falls back to weekly ALFRED sampling. Responses are cached in .cache/fred/.
+
+Method: see econ/series.py — first print, by-date comparisons, NSA index for CPI/PPI YoY.
+Rows not on FRED (ISM, NFIB, NAHB, LEI, UMich, NAR, ...) and ALL consensus figures are entered by hand.
 """
-import csv, io, urllib.request, urllib.error, datetime as dt, concurrent.futures as cf, pathlib, json
+import concurrent.futures as cf
+import csv
+import datetime as dt
+import json
+import pathlib
+import sys
+import time
 
-TODAY = dt.date.today()
-OUT = pathlib.Path(__file__).parent / "out"
+from econ.fred import Fred, FredError
+from econ.series import (DECIMALS, EXTRAS, MANUAL, MARKETS, ROWS, Fetcher, period_to_obs,
+                         round_half_up, row_keys)
 
-# row label -> (FRED id, transform, scale)   transform: lvl | diff | mom | yoy
-SERIES = {
-    "Initial Jobless Claims (000s)": ("ICSA", "lvl", 0.001),
-    "Continuing Claims (000s)": ("CCSA", "lvl", 0.001),
-    "ADP Private Employment (000s)": ("ADPMNUSNERSA", "diff", 0.001),
-    "Nonfarm Payrolls (000s)": ("PAYEMS", "diff", 1),
-    "Private Payrolls": ("USPRIV", "diff", 1),
-    "Manufacturing Payrolls": ("MANEMP", "diff", 1),
-    "Unemployment Rate": ("UNRATE", "lvl", 1),
-    "U-6 (note)": ("U6RATE", "lvl", 1),
-    "Participation (note)": ("CIVPART", "lvl", 1),
-    "JOLTS Job Openings (000s)": ("JTSJOL", "lvl", 1),
-    "Consumer Credit ($B)": ("TOTALSL", "diff", 0.001),
-    "Personal Income (MoM)": ("PI", "mom", 1),
-    "Personal Spending (MoM)": ("PCE", "mom", 1),
-    "Retail Sales (MoM)": ("RSAFS", "mom", 1),
-    "Industrial Production (MoM)": ("INDPRO", "mom", 1),
-    "Capacity Utilization": ("TCU", "lvl", 1),
-    "Durable Goods Orders (MoM)": ("DGORDER", "mom", 1),
-    "Durables ex-Transport (note)": ("ADXTNO", "mom", 1),
-    "Factory Orders (MoM)": ("AMTMNO", "mom", 1),
-    "Construction Spending (MoM)": ("TTLCONS", "mom", 1),
-    "Housing Starts (000s)": ("HOUST", "lvl", 1),
-    "Housing Starts % MoM": ("HOUST", "mom", 1),
-    "Building Permits (000s)": ("PERMIT", "lvl", 1),
-    "Building Permits % MoM": ("PERMIT", "mom", 1),
-    "New Home Sales (000s)": ("HSN1F", "lvl", 1),
-    "New Home Sales % MoM": ("HSN1F", "mom", 1),
-    "Case-Shiller 20-City (YoY, NSA)": ("SPCS20RNSA", "yoy", 1),
-    "Freddie Mac 30-Yr Mortgage": ("MORTGAGE30US", "lvl", 1),
-    "CPI (MoM)": ("CPIAUCSL", "mom", 1),
-    "CPI (YoY)": ("CPIAUCNS", "yoy", 1),
-    "Core CPI (MoM)": ("CPILFESL", "mom", 1),
-    "Core CPI (YoY)": ("CPILFENS", "yoy", 1),
-    "PPI Final Demand (MoM)": ("PPIFIS", "mom", 1),
-    "PPI Final Demand (YoY)": ("PPIFIS", "yoy", 1),
-    "Core PPI (MoM)": ("PPIFES", "mom", 1),
-    "Core PPI (YoY)": ("PPIFES", "yoy", 1),
-    "Core PCE (YoY)": ("PCEPILFE", "yoy", 1),
-    "Core PCE (QoQ SAAR)": ("DPCCRV1Q225SBEA", "lvl", 1),
-    "Real GDP (QoQ SAAR)": ("A191RL1Q225SBEA", "lvl", 1),
-    "Unit Labor Costs": ("PRS85006112", "lvl", 1),
-    "GDPNow": ("GDPNOW", "lvl", 1),
-    "10-Yr Treasury": ("DGS10", "lvl", 1),
-    "30-Yr Treasury": ("DGS30", "lvl", 1),
-    "Fed Funds Upper": ("DFEDTARU", "lvl", 1),
-}
-# Existing home sales (NAR) is licensed and not in ALFRED; FRED's current value is used as a check only.
-CURRENT_ONLY = {"Existing Home Sales (mil.)": ("EXHOSLUSM495S", "lvl", 1e-6)}
-MARKETS = {"S&P 500": "SP500", "Dow Jones": "DJIA", "NASDAQ Comp.": "NASDAQCOM"}
+ROOT = pathlib.Path(__file__).parent
+OUT = ROOT / "out"
 
-def get(url, tries=5):
-    import time
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    for t in range(tries):
-        try:
-            txt = urllib.request.urlopen(req, timeout=40).read().decode()
-            break
-        except urllib.error.HTTPError as e:
-            if e.code == 404 or t == tries - 1:
-                raise
-            time.sleep(2 * (t + 1))   # FRED returns 503 when hit too fast; back off
-    rows = list(csv.reader(io.StringIO(txt)))[1:]
-    return {d: float(v) for d, v in rows if v not in ("", ".")}
 
-def fred(sid, start="2024-06-01"):
-    return get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={sid}&cosd={start}")
-
-def alfred(sid, vdate, start="2024-06-01"):
-    try:
-        return get(f"https://alfred.stlouisfed.org/graph/alfredgraph.csv?id={sid}&vintage_date={vdate}&cosd={start}")
-    except Exception:
-        return None
-
-def transform(snap, obs, kind, scale):
-    k = sorted(snap)
-    i = k.index(obs)
-    if kind == "lvl":
-        return snap[obs] * scale
-    if kind == "diff":
-        return (snap[obs] - snap[k[i - 1]]) * scale
-    if kind == "mom":
-        return (snap[obs] / snap[k[i - 1]] - 1) * 100
-    if kind == "yoy":
-        prev = f"{int(obs[:4]) - 1}{obs[4:]}"      # by DATE, not row offset
-        return (snap[obs] / snap[prev] - 1) * 100 if prev in snap else None
-
-def first_prints(sid, kind, scale, n=2):
-    cur = fred(sid)
-    obs = sorted(cur)[-n:]
-    daily = sid in ("ICSA", "CCSA", "MORTGAGE30US", "DGS10", "DGS30", "DFEDTARU", "GDPNOW")
-    if daily:  # weekly/daily data: report current values (revisions are small and next-week)
-        return [(o, None, transform(cur, o, kind, scale), transform(cur, o, kind, scale)) for o in obs]
-    vdates = [TODAY - dt.timedelta(days=d) for d in range(0, 98, 7)][::-1]
-    snaps = {}
-    with cf.ThreadPoolExecutor(4) as ex:
-        for v, s in zip(vdates, ex.map(lambda v: alfred(sid, v.isoformat()), vdates)):
-            if s:
-                snaps[v] = s
-    out = []
-    for o in obs:
-        first = next(((v, s) for v, s in sorted(snaps.items()) if o in s), (None, None))
-        fp = transform(first[1], o, kind, scale) if first[1] else None
-        out.append((o, first[0], fp, transform(cur, o, kind, scale)))
-    return out
-
-def main():
-    import sys
-    # optional filter: python3 fetch_actuals.py CPI Payrolls  -> only rows whose label contains those words
-    keys = [a.lower() for a in sys.argv[1:]]
-    if keys:
-        for k in list(SERIES):
-            if not any(x in k.lower() for x in keys):
-                SERIES.pop(k)
-        CURRENT_ONLY.clear(); MARKETS.clear()
-    OUT.mkdir(exist_ok=True)
-    rows = []
+def run_parallel(jobs):
+    """jobs: {name: callable}. Runs 3 at a time (the Fred client also throttles globally)."""
+    results = {}
     with cf.ThreadPoolExecutor(3) as ex:
-        futs = {ex.submit(first_prints, *spec): lbl for lbl, spec in SERIES.items()}
-        for f, lbl in futs.items():
+        futs = {ex.submit(fn): name for name, fn in jobs.items()}
+        for f in cf.as_completed(futs):
             try:
-                for o, rel, fp, cur in f.result():
-                    rows.append([lbl, SERIES[lbl][0], o, rel or "", "" if fp is None else round(fp, 2), "" if cur is None else round(cur, 2)])
-            except Exception as e:
-                rows.append([lbl, SERIES[lbl][0], "ERROR", "", str(e), ""])
-    for lbl, (sid, kind, sc) in CURRENT_ONLY.items():
-        cur = fred(sid)
-        for o in sorted(cur)[-2:]:
-            rows.append([lbl, sid, o, "", "", round(transform(cur, o, kind, sc), 2)])
-        rows.append([lbl + " % MoM", sid, sorted(cur)[-1], "", "", round(transform(cur, sorted(cur)[-1], "mom", 1), 2)])
-    for name, sid in MARKETS.items():
-        cur = fred(sid, "2025-12-01")
-        k = sorted(cur); ye = [d for d in k if d <= "2025-12-31"][-1]
-        rows.append([name, sid, k[-1], "", round(cur[k[-1]], 2), f"YTD {100*(cur[k[-1]]/cur[ye]-1):.1f}%"])
-    rows.sort(key=lambda r: list(SERIES).index(r[0]) if r[0] in SERIES else 999)
-    path = OUT / f"actuals_{TODAY.isoformat()}.csv"
+                results[futs[f]] = f.result()
+            except FredError as e:
+                results[futs[f]] = e
+    return results
+
+
+def fmt_num(v, places=2):
+    return "" if v is None else f"{v:.{places}f}"
+
+
+def latest(fetcher, filters):
+    specs = {k: s for k, s in {**ROWS, **EXTRAS}.items() if not filters or any(f in k.lower() for f in filters)}
+    res = run_parallel({k: (lambda s=s: fetcher.prints(s, fetcher.latest_obs(s))) for k, s in specs.items()})
+    rows = []
+    for k in specs:
+        r = res[k]
+        if isinstance(r, Exception):
+            rows.append([k, specs[k].sid, "ERROR", "", str(r), "", ""])
+            continue
+        for p in r:
+            rows.append([k, specs[k].sid, p.obs, p.release or "", fmt_num(p.first), fmt_num(p.current), specs[k].mode])
+    if not filters:
+        start = "2025-12-01"
+        for name, sid in MARKETS.items():
+            cur = fetcher.current_series(sid, start)
+            k = sorted(cur)
+            ye = [d for d in k if d <= "2025-12-31"][-1]
+            rows.append([name, sid, k[-1], "", fmt_num(cur[k[-1]]), f"YTD {100 * (cur[k[-1]] / cur[ye] - 1):.1f}%", "current"])
+    OUT.mkdir(exist_ok=True)
+    path = OUT / f"actuals_{dt.date.today().isoformat()}.csv"
     with open(path, "w", newline="") as fh:
         w = csv.writer(fh)
-        w.writerow(["row", "fred_id", "observation", "first_seen_vintage", "first_print", "current_value"])
+        w.writerow(["row", "fred_id", "observation", "first_published", "first_print", "current_value", "mode"])
         w.writerows(rows)
-    print(f"Wrote {path}\n")
-    print(f"{'row':38} {'obs':11} {'1st print':>10} {'current':>10}  first seen")
+    print(f"{'row':52} {'obs':10} {'1st print':>10} {'current':>10}  first published")
     for r in rows:
-        print(f"{r[0][:38]:38} {r[2]:11} {str(r[4]):>10} {str(r[5]):>10}  {r[3]}")
-    print("\nNext: update data/<date>.json (actuals from 'first_print'; revisions go in Notes),"
-          " add consensus + non-FRED rows per RUNBOOK.md, then run build.py.")
+        print(f"{r[0][:52]:52} {r[2]:10} {r[4]:>10} {r[5]:>10}  {r[3]}")
+    print(f"\nWrote {path.relative_to(ROOT)}")
+    print("Manual rows (not on FRED):", ", ".join(MANUAL))
+    return 0
+
+
+def check(fetcher, data_path):
+    """Recompute every FRED-covered row of an edition for its own periods and compare."""
+    d = json.loads(pathlib.Path(data_path).read_text())
+    targets = []
+    for sec in d["sections"]:
+        for key, r in row_keys(sec):
+            if key in ROWS:
+                obs = [period_to_obs(r[p]["period"], d["edition"]) for p in ("p1", "p2")]
+                targets.append((key, r, obs))
+    res = run_parallel({key: (lambda s=ROWS[key], o=obs: fetcher.prints(s, o)) for key, r, obs in targets})
+    bad = 0
+    print(f"{'row':52} {'period':8} {'published':>10} {'fetched':>10} {'current':>9}  first published")
+    for key, r, obs in targets:
+        places = DECIMALS[r["fmt"]]
+        prints = res[key]
+        for i, p in enumerate(("p1", "p2")):
+            want = r[p]["act"]
+            if isinstance(prints, Exception):
+                got, cur, rel = None, None, f"ERROR {prints}"
+            else:
+                pr = prints[i]
+                got, cur, rel = round_half_up(pr.first, places), round_half_up(pr.current, places), pr.release or pr.freq
+            ok = got is not None and abs(got - want) < 1e-9
+            bad += not ok
+            mark = "  " if ok else "✗ "
+            print(f"{mark}{key[:50]:50} {r[p]['period']:8} {want:>10} {'' if got is None else got:>10} "
+                  f"{'' if cur is None else cur:>9}  {rel}")
+    total = 2 * len(targets)
+    print(f"\n{total - bad}/{total} FRED-covered values match {data_path} ({len(targets)} rows; "
+          f"{len(MANUAL)} rows are manual).")
+    return 1 if bad else 0
+
+
+def main(argv):
+    t0 = time.time()
+    fred = Fred(verbose="-v" in argv)
+    fetcher = Fetcher(fred)
+    print(f"FRED mode: {'API key (exact ALFRED vintages)' if fred.key else 'no key (weekly ALFRED sampling)'}\n")
+    args = [a for a in argv if not a.startswith("-")]
+    if "--check" in argv:
+        rc = check(fetcher, args[0])
+    else:
+        rc = latest(fetcher, [a.lower() for a in args])
+    s = fred.stats
+    print(f"\n{s['requests']} HTTP requests, {s['cache_hits']} cache hits, {s['retries']} retries, "
+          f"{time.time() - t0:.1f}s")
+    return rc
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv[1:]))
