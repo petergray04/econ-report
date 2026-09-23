@@ -1,88 +1,137 @@
 # Monday Routine — U.S. Economic Indicators
 
-Target: new edition live by Monday 12:00 ET. Typical time: 45–60 minutes.
+Target: new edition live by Monday 12:00 ET. Typical time: 30–45 minutes, most of it consensus sourcing.
+
+Site: https://petergray04.github.io/econ-report/ · Repo: https://github.com/petergray04/econ-report
+
+## How it works
+
+```
+Mon 10:00 UTC (6:00 ET)   GitHub Action "Monday draft"
+                          ├─ health check: fetcher reproduces the verified 2026-09-23 edition
+                          ├─ data/<Monday>.json drafted from last edition + FRED/ALFRED + markets
+                          └─ opens a draft PR with a checklist of everything that needs you
+You                       fill consensus + manual rows, finalize, push to the PR branch
+Merge to main             GitHub Action "Build and deploy": tests → validate → build PDF + pages → GitHub Pages
+```
+
+Nothing is published until you merge. A file with `"status": "draft"` is never built or deployed. The deploy fails if any row still has `needs_review`, is missing a source, or if the PDF is not exactly 2 pages.
 
 ## Files
 
-| File | What it is |
+| Path | What it is |
 |---|---|
-| `data/YYYY-MM-DD.json` | The single source of truth for one edition. Both the PDF and the website are rendered from it. |
-| `fetch_actuals.py` | Pulls first-print actuals from FRED/ALFRED and market levels. No API key. |
-| `build.py` | Renders `out/Economic_Report_YYYY-MM-DD.pdf` (2 pages, Letter) and `out/index.html` (website). |
-| `archive.json` | List of past editions and their PDF links; the website's "Past editions" list is built from it. |
+| `data/YYYY-MM-DD.json` | The single source of truth for one edition. The PDF and the web page are both rendered from it. |
+| `schema/edition.schema.json` | JSON Schema every edition must satisfy. |
+| `draft_edition.py` | Drafts next week's file (`--finalize` clears the draft markers once review is done). |
+| `fetch_actuals.py` | First-print actuals from FRED/ALFRED. `--check data/<date>.json` re-verifies an edition. |
+| `validate.py` | Schema + publish rules. `--strict` = what the deploy enforces. |
+| `build.py` | Builds `site/`: `/`, `/editions/<date>/`, `/archive/`, `/methodology/`, `/pdfs/`. |
+| `templates/` | Jinja2 templates and CSS (the approved design). |
+| `econ/` | The code behind the scripts. |
 
-Setup (once): `pip install playwright pypdf && python -m playwright install chromium`
-
-## Step 1 — Pull actuals (≈5 min)
-
-```
-python3 fetch_actuals.py
-```
-
-This writes `out/actuals_YYYY-MM-DD.csv` with, for every FRED-covered row, the two latest observations, the **first print** (the value on release day) and the **current** (revised) value.
-
-Rules:
-- The report's **Actual** is always the first print. If a later release revised it, keep the first print and put the revision in Notes (e.g. "Jul rev. to +21K").
-- CPI/PPI/PCE **YoY** must match the percentage in the BLS/BEA release text. The script computes YoY by date; if it ever disagrees with the release, the release wins.
-- Existing home sales are NAR-licensed and not in ALFRED; take them from the NAR release.
-
-## Step 2 — Copy last week's data file
+## One-time setup
 
 ```
-cp data/<last-monday>.json data/<today>.json
+make setup                         # venv, dependencies, Playwright Chromium
+echo 'FRED_API_KEY=<your key>' > .env    # .env is git-ignored; never commit the key
+gh secret set FRED_API_KEY         # paste the key when prompted; the Monday Action needs it
 ```
 
-For each row, ask: *did a new release come out since last Monday?*
-- **Yes** → shift the old "latest" (p2) into "prior" (p1) and fill the new p2.
-- **No** → leave the row alone.
+## Monday, step by step
 
-Update `edition`, `edition_label` and `data_through`.
+### 1. Open the draft PR (≈1 min)
 
-## Step 3 — Consensus and non-FRED rows (≈25 min)
+GitHub → Pull requests → **"Edition YYYY-MM-DD — draft for review"**. The PR description lists:
+- **FRED rows with a new release.** These are already shifted (latest → prior) with the **first print** filled in. Consensus is `null`. If the prior release was revised, the checklist tells you what to put in Notes.
+- **Manual rows**: ISM ×2, NFIB, LEI, UMich, NAHB, existing home sales (+ MoM), pending home sales, retail ex auto & gas. For each, check whether a new release came out since last edition.
+- **Other blocks**: KPI strip, story, On deck, GDP, forecasts and targets, and a markets spot-check. Markets and `data_through` are already refreshed.
+
+Check out the branch locally:
+```
+git fetch && git switch draft/<date>
+```
+
+If the draft didn't appear (for example, the Action failed), run it yourself:
+```
+python draft_edition.py --pr-body out/pr_body.md     # writes data/<next Monday>.json
+```
+You can also trigger it from GitHub: Actions → Monday draft → Run workflow.
+
+### 2. Consensus and manual rows (≈25 min)
 
 Consensus policy, in order of preference:
 1. **Bloomberg median.** First Trust Data Watch quotes it in its first bullet ("…versus the consensus expected …"). See ftportfolios.com → Commentary → Economic Research.
-2. **Dow Jones** (CNBC), **Reuters/LSEG**, or **FactSet**, if Bloomberg isn't quoted. Say which in Notes.
-3. **"—"** (`null` in the JSON) if no public consensus exists. Never estimate.
+2. **Dow Jones** (CNBC), **Reuters/LSEG** or **FactSet**, if Bloomberg isn't quoted. Name the source in Notes.
+3. Otherwise **`null`**, which renders as "—". **Never estimate.**
+
+For a manual row with a new release: move `p2` into `p1`, then fill the new `p2` (`period`, `cons`, `act`).
+
+When a row is done, **delete its `"needs_review"` and `"review"` keys**.
 
 | Row | Where the actual comes from | Release timing |
 |---|---|---|
-| Jobless claims | DOL weekly release (dol.gov/ui/data.pdf) | Thu 8:30 |
-| ADP | adpemploymentreport.com | Wed before jobs report |
-| UMich sentiment | sca.isr.umich.edu — prelim on the 2nd Fri, final on the 4th Fri | Fri 10:00 |
+| Jobless claims | FRED (auto) · DOL weekly release (dol.gov/ui/data.pdf) | Thu 8:30 |
+| ADP | FRED (auto) · adpemploymentreport.com | Wed before jobs report |
+| UMich sentiment | sca.isr.umich.edu. Prelim on the 2nd Fri, final on the 4th Fri | Fri 10:00 |
 | ISM Mfg / Services | ismworld.org | 1st and 3rd business day |
 | NFIB | nfib.com SBET | 2nd Tue |
 | Leading Economic Index | conference-board.org press release | ~3rd week |
 | NAHB | nahb.org HMI | mid-month |
-| Existing / pending home sales | nar.realtor newsroom | — |
-| MBA applications | mba.org weekly survey | Wed 7:00 |
-| IMF WEO | imf.org — Jan / Apr / Jul / Oct | quarterly |
-| Morgan Stanley targets | public press only. Keep the "confirm against internal research" caveat. | as changed |
+| Existing / pending home sales | nar.realtor newsroom (NAR-licensed; not in ALFRED) | — |
+| Retail sales ex auto & gas | Census MARTS release table | mid-month |
+| MBA applications (note) | mba.org weekly survey | Wed 7:00 |
+| IMF WEO | imf.org. Jan / Apr / Jul / Oct | quarterly |
+| Morgan Stanley targets | Public press only. Keep the "confirm against internal research" caveat. The schema enforces it. | as changed |
 
-## Step 4 — Headline strip, story, watch list (≈10 min)
+### 3. Headline strip, story, watch list (≈10 min)
 
-- **`kpis`**: six headline prints. Use `"up"` or `"dn"` for the tone.
-- **`story`**: one paragraph covering what changed this week and why it matters.
+- **`kpis`**: six headline prints. `"tone"` is `"up"`, `"dn"` or `""`.
+- **`story`**: one paragraph on what changed this week and why it matters.
 - **`watch`**: only release dates you have confirmed from the agency calendar.
 
-## Step 5 — Build and check (≈5 min)
+### 4. Finalize, build, merge (≈5 min)
 
 ```
-python3 build.py data/<today>.json
+python draft_edition.py --finalize data/<date>.json   # refuses while any needs_review remains
+make build                                            # validate + build; fails unless the PDF is 2 pages
+make serve                                            # optional: preview at http://localhost:8765
 ```
 
-- The PDF must be exactly 2 pages. If it spills over, shorten Notes before touching the CSS.
-- Spot-check five cells against their sources.
-- Every row needs a source.
+- If the PDF spills to 3 pages, shorten Notes before touching the CSS.
+- Spot-check five cells against their sources. Every row needs a `src` and a `url`.
+- Commit, push to the PR branch, click **Ready for review**, then **Merge**. The site updates in about 2 minutes.
 
-## Step 6 — Publish
+## Data rules (non-negotiable)
 
-1. Upload the PDF to the site's asset store. In a Claude chat, say:
-   "Upload out/Economic_Report_<date>.pdf to my econ report site and add it to the archive."
-2. Add the entry at the top of `archive.json`:
-   ```
-   {"edition": "<date>", "label": "<Month D, YYYY>", "pdf_url": "/_blob/<asset id>"}
-   ```
-3. Rebuild with `python3 build.py data/<today>.json --no-pdf` and republish `out/index.html` to the same site URL.
+1. **Actual = first print.** Use the value published on release day, taken from an ALFRED vintage. `fetch_actuals.py` and the draft do this for you. Revisions go in Notes (for example, "Jul rev. to +21K").
+   - Exception: *Core PCE (QoQ SAAR)* is shown at the current vintage, as the verified edition's note says.
+2. **YoY is computed by date, never by row offset.** FRED has no Oct-2025 observation (shutdown). The code refuses to compute a MoM across a missing month rather than compare against the wrong one. If a computed figure differs from the agency's release text, the release text wins.
+   - CPI and PPI YoY use the not-seasonally-adjusted index (`CPIAUCNS`, `CPILFENS`, `PPIFID`, `PPICOR`), as BLS does.
+3. **Consensus**: see the policy above. Unknown = `null`.
+4. **Markets**:
+   - Index levels and YTD come from FRED (`SP500`, `DJIA`, `NASDAQCOM`).
+   - EFA and EEM come from the Yahoo chart API.
+   - Yields come from FRED (`DGS10`, `DGS30`).
+   - Returns are price returns vs. the end-2025 close. Only completed sessions are used.
+5. **`data/2026-09-23.json` is the verified reference edition. Never edit it.** A test locks its hash, and the Monday Action re-verifies the fetcher against it.
 
-If the site moves to your own domain, set `pdf_url` to a relative path (for example `pdfs/Economic_Report_<date>.pdf`) and upload the PDF next to `index.html`.
+## Commands
+
+| Command | What it does |
+|---|---|
+| `make build` | Validate every edition, then build all pages and PDFs into `site/` |
+| `make site` | Pages only (reuses existing PDFs) |
+| `make test` | Unit tests (offline). `FRED_LIVE=1 make test` adds the live FRED regression checks |
+| `make fetch` | Latest two first prints for every FRED row → `out/actuals_<today>.csv` |
+| `python fetch_actuals.py --check data/<date>.json` | Recompute an edition's FRED rows and compare |
+| `python validate.py [--strict] [files]` | Schema + publish rules |
+| `make serve` | Preview `site/` locally |
+
+## Troubleshooting
+
+- **FRED 503/429.** The client already keeps 3 requests in flight at most, spaces them 0.55 s apart, retries with backoff, and caches responses in `.cache/fred/`. Just re-run; cached responses aren't re-fetched. Without `FRED_API_KEY` it falls back to weekly ALFRED sampling. That's slower (≈400 requests on a cold cache) but gives the same numbers.
+- **Health check failed in the Monday Action.** A FRED series was redefined or renamed. Run `python fetch_actuals.py --check data/2026-09-23.json -v` locally and look at the ✗ rows. Fix the mapping in `econ/series.py`, never the data.
+- **EFA/EEM not refreshed.** The Yahoo API is unofficial. The draft says `EFA/EEM: NOT REFRESHED` in `data_through`. Enter the closes by hand and fix that line.
+- **Deploy failed.** Open the Action log. The failing step names the edition and the row: validation, 2-page check, or tests.
+- **Correcting a published edition.** Edit its data file in a PR and merge. Every page and PDF is rebuilt on deploy. Put the correction in Notes.

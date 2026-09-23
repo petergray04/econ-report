@@ -22,22 +22,24 @@ Each edition ships as:
 
 The owner is Peter, a finance/econ student. The audience is financial advisors and finance readers. Accuracy and sourcing matter more than anything else on this site.
 
-## Current state (what already exists in this repo)
+## Current state (v1 built 2026-09-23)
 
-| File | Status |
+Repo: https://github.com/petergray04/econ-report (public) · Site: https://petergray04.github.io/econ-report/ (GitHub Pages, deployed by Actions)
+
+| Path | Status |
 |---|---|
-| `data/2026-09-23.json` | First edition, fully researched and verified. **This is the data schema.** Do not change its numbers. |
-| `build.py` | Works. Renders `out/Economic_Report_<date>.pdf` (Playwright/Chromium HTML→PDF, exactly 2 Letter pages) and `out/index.html` from one data file. |
-| `fetch_actuals.py` | Pulls first-print actuals from FRED/ALFRED with no API key. **Logic is proven but it was never run end-to-end.** FRED returned 503 (rate limit) in the original sandbox. Test it first. |
-| `RUNBOOK.md` | The manual Monday process, consensus sourcing policy and release calendar. |
-| `archive.json` | Archive list. The one entry currently points at a Claude-hosted blob URL (`/_blob/...`). **Must be replaced** with a relative path. |
-| `out/` | Built outputs for 2026-09-23 (reference for visual design). |
+| `data/2026-09-23.json` | First edition, fully researched and verified. **This is the data schema.** Never edit it; `tests/test_validate.py` locks its SHA-256. |
+| `schema/edition.schema.json` | JSON Schema (2020-12) for every edition; `validate.py` adds the publish rules. |
+| `build.py` + `econ/render.py`, `econ/site.py`, `econ/pdf.py`, `templates/` | Jinja2 build of the whole site into `site/`; PDFs must be exactly 2 Letter pages or the build fails. The archive is derived from `data/*.json` (drafts skipped). |
+| `fetch_actuals.py` + `econ/fred.py`, `econ/series.py` | First prints from ALFRED. Uses `FRED_API_KEY` (env or git-ignored `.env`; GitHub secret for Actions), with a no-key fallback. `--check data/2026-09-23.json` → 70/70 match in both modes, 0 retries. |
+| `draft_edition.py` + `econ/draft.py` | Monday draft (shift p2→p1, first prints, consensus null + `needs_review`, markets refresh); `--finalize`. |
+| `.github/workflows/` | `deploy.yml` (push to main → Pages), `ci.yml` (PR checks), `monday-draft.yml` (cron Mon 10:00 UTC + dispatch → draft PR). |
+| `RUNBOOK.md` | The Monday process for the PR-based workflow. |
+| `out/` | Original pre-refactor outputs, kept as the visual reference. |
 
-### Things in `build.py` that only made sense on the old Claude-artifact host
+The Claude-artifact leftovers (`window.claude` downloads script, `/_blob/` URLs, `/opt/pw-browsers`) are gone, and `archive.json` has been removed.
 
-These must be removed or replaced:
-- The `<script>` block calling `window.claude.use("downloads")`. Replace it with plain `<a href="pdfs/…" download>` links.
-- `pdf_url` values starting with `/_blob/`. Replace them with `pdfs/Economic_Report_<date>.pdf`.
+Decisions made: GitHub Pages, public site, FRED API key provided, masthead name kept, no email signup in v1.
 
 ## Non-negotiable data rules (learned the hard way)
 
@@ -136,14 +138,14 @@ Optional later: a small password-protected "editor" page for entering consensus 
 
 ## Definition of done for v1
 
-- [ ] Repo builds locally with one command (`make build` or `python build.py data/<date>.json`).
-- [ ] The 2026-09-23 edition renders on the deployed site with identical numbers to `out/Economic_Report_2026-09-23.pdf`.
-- [ ] The PDF downloads from the site and the archive page lists it.
-- [ ] Methodology page exists.
-- [ ] `fetch_actuals.py` runs end-to-end without 503 failures and its output matches the verified numbers in `data/2026-09-23.json` for the FRED-covered rows. This is the regression test: e.g. Aug payrolls 162, Aug CPI YoY 3.4, Aug housing starts 1,275.
+- [x] Repo builds locally with one command (`make build` or `python build.py data/<date>.json`).
+- [x] The 2026-09-23 edition renders on the deployed site with identical numbers to `out/Economic_Report_2026-09-23.pdf`.
+- [x] The PDF downloads from the site and the archive page lists it.
+- [x] Methodology page exists.
+- [x] `fetch_actuals.py` runs end-to-end without 503 failures and its output matches the verified numbers in `data/2026-09-23.json` for the FRED-covered rows. This is the regression test: e.g. Aug payrolls 162, Aug CPI YoY 3.4, Aug housing starts 1,275.
 - [ ] The scheduled GitHub Action opens a draft PR on a manual trigger (`workflow_dispatch`).
-- [ ] JSON Schema validation runs in CI.
-- [ ] `RUNBOOK.md` is updated for the new workflow.
+- [x] JSON Schema validation runs in CI.
+- [x] `RUNBOOK.md` is updated for the new workflow.
 
 ## Open decisions to ask Peter about (don't guess)
 
