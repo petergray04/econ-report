@@ -1,0 +1,13 @@
+{%- extends "base.html" -%}
+{%- import "_macros.html" as m -%}
+{%- block title %}{{ site.name }} — {{ d.edition_label }}{% endblock -%}
+{%- block body -%}
+<header class="mast"><div><h1>{{ site.name }}</h1><p>{{ d.edition_label }} edition · the two most recent releases for every indicator, consensus vs. actual, each linked to its primary source. {{ d.data_through }}.</p></div>
+<div class="cta"><a class="btn" href="{{ root }}{{ pdf_path(d.edition) }}" download>Download PDF</a><a class="btn ghost" href="{{ root }}{{ pdf_path(d.edition) }}" target="_blank" rel="noopener">Open PDF</a><small>Updated every Monday</small></div></header>
+{{ m.kpis(d) }}{{ m.story_watch(d) }}
+{%- for s in d.sections %}{{ m.section_table(s) }}{% endfor -%}
+{{ m.bottom(d) }}{{ m.method(d) }}
+<section class="archive"><h2 style="font-size:24px;margin-bottom:8px">Past editions</h2><ol>
+{%- for a in archive %}<li><a href="{{ root }}{{ pdf_path(a.edition) }}" target="_blank" rel="noopener">{{ a.label }}</a><a class="dl" href="{{ root }}{{ pdf_path(a.edition) }}" download>PDF</a></li>{% endfor -%}
+</ol></section>
+{%- endblock -%}

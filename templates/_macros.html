@@ -1,0 +1,69 @@
+{#- Shared building blocks for the PDF and the website. Each macro mirrors a function
+    from the original build.py; output must stay number-for-number identical. -#}
+
+{% macro section_table(sec) -%}
+<section class="block"><h2>{{ sec.title }}</h2><div class="scroll"><table>
+<colgroup><col class="c-ind"><col class="c-per"><col class="c-n"><col class="c-n"><col class="c-per"><col class="c-n"><col class="c-n"><col class="c-note"><col class="c-src"></colgroup>
+<thead><tr><th></th><th colspan="3" class="grp">Prior period</th><th colspan="3" class="grp">Latest period</th><th></th><th></th></tr>
+<tr><th>Indicator</th><th>Period</th><th>Cons.</th><th>Actual</th><th>Period</th><th>Cons.</th><th>Actual</th><th>Notes</th><th>Source</th></tr></thead>
+<tbody>
+{%- for r in sec.rows %}
+<tr class="{{ 'sub' if r.sub else '' }}"><th scope="row">{{ r.label }}</th>
+{%- for p in (r.p1, r.p2) %}<td class="per">{{ p.period }}</td><td class="num">{{ p.cons | fmt(r.fmt) }}</td><td class="num act {{ verdict(r, p) }}">{{ p.act | fmt(r.fmt) }}</td>{% endfor -%}
+<td class="note">{{ r.note }}</td><td class="src">{% if r.url %}<a href="{{ r.url }}">{{ r.src }}</a>{% else %}{{ r.src }}{% endif %}</td></tr>
+{%- endfor %}
+</tbody></table></div></section>
+{%- endmacro %}
+
+{% macro kpis(d) -%}
+<div class="kpis">
+{%- for k in d.kpis %}<div class="kpi"><div class="kl">{{ k.label }}</div><div class="kv {{ k.tone }}">{{ k.value }}</div><div class="kd">{{ k.detail }}</div></div>{% endfor -%}
+</div>
+{%- endmacro %}
+
+{% macro story_watch(d) -%}
+<section class="sw"><div class="card story"><h3>The week in one paragraph</h3><p>{{ d.story }}</p></div>
+<div class="card"><h3>On deck</h3><ul class="watch">
+{%- for when, what in d.watch %}<li><span>{{ when }}</span>{{ what }}</li>{% endfor -%}
+</ul></div></section>
+{%- endmacro %}
+
+{% macro bottom(d) -%}
+{%- set g = d.gdp -%}
+<section class="bottom">
+<div class="card"><h3>Real GDP (QoQ SAAR)</h3><table class="mini"><thead><tr><th></th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th></tr></thead>
+<tbody>
+{%- for y, vals in g.years.items() %}<tr><th scope="row">{{ y }}</th>{% for v in vals %}<td class="num">{{ v | fmt('pct') }}</td>{% endfor %}</tr>{% endfor -%}
+</tbody></table>
+<p class="fine">GDPNow {{ g.gdpnow.q }}: <b>{{ '%.1f' | format(g.gdpnow.value) }}%</b><br>
+Unit labor costs (SAAR) — {% for k, v in g.ulc.items() %}{{ k }}: {{ '%.1f' | format(v) }}%{{ ' · ' if not loop.last }}{% endfor %}<br>
+ECI (QoQ) — {% for k, v in g.eci.items() %}{{ k }}: {{ '%.1f' | format(v) }}%{{ ' · ' if not loop.last }}{% endfor %}</p>
+<p class="fine muted">{{ g.note }}</p>
+<p class="fine src"><a href="https://www.bea.gov/data/gdp/gross-domestic-product">BEA</a> · <a href="https://www.atlantafed.org/cqer/research/gdpnow">Atlanta Fed</a> · <a href="https://www.bls.gov/lpc/">BLS</a></p></div>
+
+{%- set ms = d.ms %}
+<div class="card"><h3>Forecasts &amp; Targets</h3><table class="mini"><thead><tr><th>IMF GDP</th><th>U.S.</th><th>World</th></tr></thead><tbody>
+{%- for y, u, w in d.imf.rows %}<tr><th scope="row">{{ y }}</th><td class="num">{{ '%.1f' | format(u) }}%</td><td class="num">{{ '%.1f' | format(w) }}%</td></tr>{% endfor -%}
+</tbody></table>
+<p class="fine muted">{{ d.imf.edition }}</p>
+<table class="mini"><tbody><tr><th scope="row">MS S&amp;P 500, YE 2026</th><td class="num">{{ ms.sp_ye26 }}</td></tr>
+<tr><th scope="row">MS S&amp;P 500, mid-2027</th><td class="num">{{ ms.sp_mid27 }}</td></tr>
+<tr><th scope="row">MS EPS 2026E / 2027E</th><td class="num">{{ ms.eps26 }} / {{ ms.eps27 }}</td></tr>
+<tr><th scope="row">P/E on MS 2026E</th><td class="num">{{ ms.pe }}</td></tr></tbody></table>
+<p class="fine muted">{{ ms.asof }}. {{ ms.note }}</p>
+<p class="fine src"><a href="https://www.imf.org/en/Publications/WEO">IMF WEO</a> · public press coverage of MS Research</p></div>
+
+{%- set m = d.markets %}
+<div class="card"><h3>Markets</h3><table class="mini"><thead><tr><th></th><th>Level</th><th>2025</th><th>YTD</th></tr></thead><tbody>
+{%- for n, lvl, a, b in m.rows %}<tr><th scope="row">{{ n }}</th><td class="num">{{ lvl }}</td><td class="num">{{ a | fmt('pct') }}</td><td class="num {{ 'beat' if b >= 0 else 'miss' }}">{{ b | fmt('pct') }}</td></tr>{% endfor -%}
+</tbody></table>
+<table class="mini"><thead><tr><th></th><th>End-2025</th><th>Now</th><th>Chg</th></tr></thead><tbody>
+{%- for n, a, b in m.rates %}<tr><th scope="row">{{ n }}</th><td class="num">{{ '%.2f' | format(a) }}%</td><td class="num">{{ '%.2f' | format(b) }}%</td><td class="num">{{ bp_change(a, b) }}</td></tr>{% endfor -%}
+</tbody></table>
+<p class="fine muted">{{ m.note }}</p><p class="fine src"><a href="https://fred.stlouisfed.org/series/SP500">FRED</a> · <a href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates">U.S. Treasury</a></p></div>
+</section>
+{%- endmacro %}
+
+{% macro method(d) -%}
+<p class="method"><b>Method.</b> {{ d.actuals_policy }} {{ d.consensus_policy }} <span class="beat">Green</span> = better than consensus; <span class="miss">rust</span> = worse (for inflation, claims and unemployment, lower is better). Not investment advice.</p>
+{%- endmacro %}

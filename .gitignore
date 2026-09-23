@@ -6,3 +6,4 @@ site/
 .DS_Store
 out/actuals_*.csv
 out/report_*.html
+.env

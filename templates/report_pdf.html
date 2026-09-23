@@ -1,0 +1,17 @@
+{%- import "_macros.html" as m -%}
+{%- set secs = d.sections -%}
+{%- macro mast() -%}
+<header class="mast"><div><div class="kick">Weekly briefing · two most recent releases per indicator</div><h1>{{ site.name }}</h1></div><div class="date"><b>{{ d.edition_label }}</b>{{ d.data_through }}</div></header>
+{%- endmacro -%}
+{%- macro foot(n) -%}
+<div class="pagefoot"><span>{{ site.name }} · {{ d.edition }}</span><span>Page {{ n }} of 2</span></div>
+{%- endmacro -%}
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="{{ fonts_url }}">
+<style>
+{% include "css/base.css" %}
+{% include "css/pdf.css" %}
+</style></head><body>
+<div class="page">{{ mast() }}{{ m.kpis(d) }}{{ m.story_watch(d) }}{{ m.section_table(secs[0]) }}{{ m.section_table(secs[1]) }}{{ m.section_table(secs[2]) }}{{ foot(1) }}</div>
+<div class="page">{{ m.section_table(secs[3]) }}{{ m.section_table(secs[4]) }}{{ m.bottom(d) }}{{ m.method(d) }}{{ foot(2) }}</div>
+</body></html>
