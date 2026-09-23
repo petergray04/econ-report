@@ -1,0 +1,35 @@
+name: Check pull request
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+      - name: Tests
+        run: python -m pytest -q
+      - name: Review checklist (drafts listed, not failed)
+        run: python validate.py
+      - name: Ready to publish? (fails while any draft / needs_review remains)
+        run: python validate.py --strict
+      - name: Build (fails unless every PDF is exactly 2 pages)
+        run: python build.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview-site
+          path: site
+          retention-days: 14
