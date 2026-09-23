@@ -262,9 +262,10 @@ class Fetcher:
         first_obs = dt.date.fromisoformat(min(obs_dates))
         v = first_obs + dt.timedelta(days=1)
         samples = []
-        while v <= dt.date.today():
+        while v < dt.date.today():
             samples.append(v.isoformat())
             v += dt.timedelta(days=7)
+        samples.append(dt.date.today().isoformat())   # always include today's vintage
         out = []
         for o in obs_dates:
             found = None
