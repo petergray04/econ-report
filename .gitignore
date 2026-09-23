@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+site/
+.cache/
+.DS_Store
+out/actuals_*.csv
+out/report_*.html
