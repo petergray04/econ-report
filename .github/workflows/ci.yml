@@ -10,6 +10,7 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 20   # a hung install must not hold the deploy slot for hours
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
