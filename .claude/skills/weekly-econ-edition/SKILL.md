@@ -79,7 +79,7 @@ Open `data/<date>.json` and go through each row with `needs_review`. Its `review
 - **`gdp`, `imf`, `ms`:** update only if a new estimate, WEO or target was published, and source it.
 - **`sentiment`:** the draft resets it to nulls every week.
   - **AAII**, from https://www.aaii.com/sentimentsurvey (published Thursdays): fill `week` as the week-ending date in "M/D" form, `bull`, `neutral` and `bear` as percentages that sum to 100, and `avg_bull`, `avg_neutral` and `avg_bear` as the long-term averages AAII shows.
-  - **CNN Fear & Greed**, from https://www.cnn.com/markets/fear-and-greed: fill `value` (0–100), `label` exactly as CNN shows it (for example "Fear") and `asof` in "Mon D" form.
+  - **CNN Fear & Greed**: the draft fills it automatically from CNN's data feed, using the last completed day. If the draft's to-do list says it wasn't fetched, fill `value` (0–100), `label` exactly as CNN shows it (for example "Fear") and `asof` in "Mon D" form from https://www.cnn.com/markets/fear-and-greed, or leave it null.
   - If a page can't be read, try a reputable page quoting that week's figures, such as Reuters, MarketWatch or Investing.com, and cite it. Otherwise leave the values null. The block hides itself when it's empty.
 - **Markets:** spot-check one index level against FRED and `data_through`. If it says `EFA/EEM: NOT REFRESHED`, fill the EFA/EEM closes from a public quote page and fix that text.
 

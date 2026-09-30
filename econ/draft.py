@@ -21,6 +21,8 @@ from .series import (DECIMALS, MANUAL, ROWS, Fetcher, period_label, period_style
                      round_half_up, row_keys)
 from .validate import validate
 
+BROWSER_UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
+              "Chrome/124.0 Safari/537.36")
 YEAR_END = "2025-12-31"        # returns are measured from the end-2025 close
 INDEXES = {"S&P 500": "SP500", "Dow Jones": "DJIA", "NASDAQ Comp.": "NASDAQCOM"}
 ETFS = {"EAFE (EFA)": "EFA", "Emerging Mkts (EEM)": "EEM"}
@@ -116,6 +118,25 @@ def yahoo_closes(symbol, start, before):
     return out
 
 
+def cnn_fear_greed(before):
+    """CNN Fear & Greed reading for the last day before `before` (YYYY-MM-DD), from the JSON feed
+    behind cnn.com/markets/fear-and-greed. Returns {value, label, asof} or raises."""
+    start = (dt.date.fromisoformat(before) - dt.timedelta(days=14)).isoformat()
+    req = urllib.request.Request(
+        f"https://production.dataviz.cnn.io/index/fearandgreed/graphdata/{start}",
+        headers={"User-Agent": BROWSER_UA, "Accept": "*/*", "Accept-Language": "en-US,en;q=0.9",
+                 "Referer": "https://www.cnn.com/markets/fear-and-greed"})   # without these CNN answers HTTP 418
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        j = json.loads(resp.read().decode())
+    pts = {}
+    for p in j["fear_and_greed_historical"]["data"]:
+        day = dt.datetime.fromtimestamp(p["x"] / 1000, dt.timezone.utc).date().isoformat()
+        if day < before:
+            pts[day] = p          # last reading of each day wins
+    day = max(pts)
+    return {"value": round(pts[day]["y"], 1), "label": pts[day]["rating"].title(), "asof": short_date(day)[:-6]}
+
+
 def update_markets(d, fetcher, edition_date, todo, log):
     """Refresh index levels, ETF prices and yields from completed sessions only (before today and
     before the edition date), so a mid-session run never picks up a partial day."""
@@ -149,6 +170,12 @@ def update_markets(d, fetcher, edition_date, todo, log):
         r[1] = c[[x for x in k if x <= YEAR_END][-1]]
         r[2] = c[k[-1]]
         rate_date = k[-1]
+    try:
+        fg = cnn_fear_greed(today.isoformat())
+        d["sentiment"]["fear_greed"].update(fg)
+        log.append(f"CNN Fear & Greed {fg['asof']}: {fg['value']} ({fg['label']})")
+    except Exception as e:  # unofficial feed; never block the draft on it
+        todo.append(f"CNN Fear & Greed not fetched ({e}) — fill from cnn.com or leave null")
     m["note"] = f"Price returns. Treasury yields: end-2025 vs {short_date(rate_date)} (constant maturity)."
     if etf_date is None:
         etf = " (EFA/EEM: NOT REFRESHED)"

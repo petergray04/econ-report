@@ -1063,9 +1063,9 @@
    "url": "https://www.aaii.com/sentimentsurvey"
   },
   "fear_greed": {
-   "value": null,
-   "label": null,
-   "asof": "",
+   "value": 28.9,
+   "label": "Fear",
+   "asof": "Sep 29",
    "url": "https://www.cnn.com/markets/fear-and-greed"
   }
  }
