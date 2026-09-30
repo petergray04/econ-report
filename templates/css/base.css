@@ -38,3 +38,17 @@ table.mini thead th{font-size:8.5px}
 .watch li span{font-family:"IBM Plex Mono",monospace;font-weight:600;min-width:62px}
 .story p{font-family:"Source Serif 4",Georgia,serif;font-size:11px;line-height:1.5;margin:0}
 .method{font-size:8px;color:var(--muted);line-height:1.4}
+/* market sentiment (shared by PDF and site) */
+.senti .sgrid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}
+.senti .shead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:9px;color:var(--muted);margin-bottom:4px}
+.senti .mood{font-family:"IBM Plex Mono",Menlo,monospace;font-size:11px;letter-spacing:.3px;text-transform:uppercase;color:var(--ink2)}
+.senti .mood.beat{color:var(--beat)}.senti .mood.miss{color:var(--miss)}
+.sbar{display:flex;height:8px;border-radius:2px;overflow:hidden;background:var(--soft);margin:2px 0 6px}
+.sbar i{display:block;height:100%}
+.sbar .b{background:var(--beat)}.sbar .n{background:var(--rule)}.sbar .r{background:var(--miss)}
+.fgv{display:flex;align-items:baseline;gap:8px}
+.fgn{font-family:"IBM Plex Mono",Menlo,monospace;font-weight:600;font-size:22px;font-variant-numeric:tabular-nums}
+.fgl{font-weight:600;font-size:11px;color:var(--ink2)}
+.fgscale{position:relative;height:6px;border-radius:3px;margin:6px 0 2px;background:linear-gradient(90deg,var(--miss),var(--rule) 50%,var(--beat))}
+.fgscale i{position:absolute;top:-3px;width:2px;height:12px;background:var(--ink);transform:translateX(-1px)}
+.fgends{display:flex;justify-content:space-between;font-size:8px;color:var(--muted)}

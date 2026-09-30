@@ -1,5 +1,5 @@
 {%- extends "base.html" -%}
-{%- import "_macros.html" as m -%}
+{%- import "_macros.html" as m with context -%}
 {%- set nav = 'latest' if is_latest else 'archive' -%}
 {%- set pdf = root ~ pdf_path(d.edition) -%}
 {%- block title %}{{ site.name }} — {{ d.edition_label }}{% endblock -%}
@@ -9,8 +9,8 @@
 {%- endif %}
 <header class="mast"><div><h1>{{ site.name }}</h1><p>{{ d.edition_label }} edition · the two most recent releases for every indicator, consensus vs. actual, each linked to its primary source. {{ d.data_through }}.</p></div>
 <div class="cta"><a class="btn" href="{{ pdf }}" download>Download PDF</a><a class="btn ghost" href="{{ pdf }}" target="_blank" rel="noopener">Open PDF</a><small>Updated every Monday</small></div></header>
-{{ m.kpis(d) }}{{ m.story_watch(d) }}
-{%- for s in d.sections %}{{ m.section_table(s) }}{% endfor -%}
+{{ m.kpis(d) }}{{ m.story_watch(d) }}{{ m.sentiment(d) }}
+{%- for s in d.sections %}{{ m.section_table(s, loop.index) }}{% endfor -%}
 {{ m.bottom(d) }}{{ m.method(d) }}
 <section class="archive"><h2>Past editions</h2><ol>
 {%- for a in archive[:8] %}<li><a href="{{ root }}editions/{{ a.edition }}/">{{ a.label }}</a><a class="dl" href="{{ root }}{{ pdf_path(a.edition) }}" download>PDF</a></li>{% endfor -%}

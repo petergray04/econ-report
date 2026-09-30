@@ -67,6 +67,22 @@ def publish_issues(d, filename=None):
                                "published (e.g. 'Cons. range: Reuters poll')")
         if "no public consensus" in note and any((r.get(k) or {}).get("cons") is not None for k in ("p1", "p2")):
             out.append(f'{where}: note says "no public consensus" but a consensus value is filled in')
+    out += sentiment_issues(d.get("sentiment"))
+    return out
+
+
+def sentiment_issues(st):
+    out = []
+    a = (st or {}).get("aaii")
+    if a:
+        vals = [a.get(k) for k in ("bull", "neutral", "bear")]
+        if any(v is None for v in vals) and any(v is not None for v in vals):
+            out.append("sentiment › AAII: fill all of bull/neutral/bear, or leave all three null")
+        elif all(v is not None for v in vals) and abs(sum(vals) - 100) > 0.3:
+            out.append(f"sentiment › AAII: bull+neutral+bear = {sum(vals):.1f}, should be 100")
+    f = (st or {}).get("fear_greed")
+    if f and f.get("value") is not None and not f.get("label"):
+        out.append("sentiment › Fear & Greed: value without its label (e.g. 'Fear')")
     return out
 
 

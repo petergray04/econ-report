@@ -77,3 +77,17 @@ def test_published_range_needs_source_in_notes_and_order():
     assert any("lo < hi" in e for e in validate(d, REF_PATH)[0])
     first_row(d)["p2"]["cons"] = {"lo": 200}
     assert any("schema" in e for e in validate(d, REF_PATH)[0])
+
+
+def test_sentiment_validation():
+    from tests.test_render import SENTI
+    d = copy.deepcopy(REF)
+    d["sentiment"] = copy.deepcopy(SENTI)
+    assert validate(d, REF_PATH)[0] == []
+    d["sentiment"]["aaii"]["bear"] = 45.0
+    assert any("should be 100" in e for e in validate(d, REF_PATH)[0])
+    d["sentiment"]["aaii"].update(bull=None, neutral=None, bear=None)
+    d["sentiment"]["fear_greed"].update(value=None, label=None)
+    assert validate(d, REF_PATH)[0] == []          # blank is allowed: never blocks publishing
+    d["sentiment"]["aaii"]["bull"] = 30.0
+    assert any("fill all of" in e for e in validate(d, REF_PATH)[0])

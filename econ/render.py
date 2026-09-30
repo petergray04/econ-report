@@ -3,7 +3,9 @@ import pathlib
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoescape
 
-from .formatting import bp_change, fmt, has_range, verdict
+import json
+
+from .formatting import bp_change, fg_class, fmt, has_range, mood_of, spread, verdict
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TEMPLATES = ROOT / "templates"
@@ -23,8 +25,16 @@ def env():
                     undefined=StrictUndefined, trim_blocks=False, lstrip_blocks=False)
     e.filters["fmt"] = fmt
     e.globals.update(verdict=verdict, has_range=has_range, bp_change=bp_change, pdf_path=pdf_path,
-                     site=SITE, fonts_url=FONTS_URL)
+                     mood_of=mood_of, spread=spread, fg_class=fg_class,
+                     site=SITE, fonts_url=FONTS_URL, gloss={})   # gloss={} -> no (i) buttons (PDF)
     return e
+
+
+def glossary():
+    """Plain-English metric explanations for the website's (i) buttons (content/glossary.json)."""
+    g = json.loads((ROOT / "content" / "glossary.json").read_text())
+    g.pop("_about", None)
+    return g
 
 
 def site_css():

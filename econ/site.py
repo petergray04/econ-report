@@ -14,7 +14,7 @@ import pathlib
 import shutil
 
 from .pdf import html_to_pdf
-from .render import ROOT, pdf_path, render, site_css
+from .render import ROOT, glossary, pdf_path, render, site_css
 
 DATA_DIR = ROOT / "data"
 SITE_DIR = ROOT / "site"
@@ -70,7 +70,7 @@ def build_site(editions, pdf_editions=(), site_dir=SITE_DIR):
     latest = editions[0]
     write(site_dir / "assets" / "site.css", site_css())
     write(site_dir / ".nojekyll", "")
-    ctx = dict(archive=archive, latest=latest)
+    ctx = dict(archive=archive, latest=latest, gloss=glossary())
     write(site_dir / "index.html", render("edition.html", d=latest, root="", is_latest=True, **ctx))
     for d in editions:
         write(site_dir / "editions" / d["edition"] / "index.html",

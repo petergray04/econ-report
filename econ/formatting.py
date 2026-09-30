@@ -64,3 +64,26 @@ def verdict(row, p):
 def bp_change(a, b):
     """Yield change from a to b in basis points, e.g. '+78 bp'."""
     return f'{"+" if b >= a else MINUS}{abs(b - a) * 100:.0f} bp'
+
+
+# ---------- market sentiment ----------
+def mood_of(a):
+    """AAII reading -> the mood with the largest share: Bullish / Neutral / Bearish (Mixed on a tie)."""
+    shares = {"Bullish": a["bull"], "Neutral": a["neutral"], "Bearish": a["bear"]}
+    top = max(shares.values())
+    leaders = [k for k, v in shares.items() if v == top]
+    label = leaders[0] if len(leaders) == 1 else "Mixed"
+    return {"label": label, "cls": {"Bullish": "beat", "Bearish": "miss"}.get(label, "")}
+
+
+def spread(bull, bear):
+    """Bull-bear spread in percentage points, e.g. '+4.2 pts'."""
+    if bull is None or bear is None:
+        return "—"
+    x = bull - bear
+    return f'{"+" if x >= 0 else MINUS}{abs(x):.1f} pts'
+
+
+def fg_class(v):
+    """CNN Fear & Greed zones: 0–44 fear (rust), 45–55 neutral, 56–100 greed (green)."""
+    return "miss" if v < 45 else "beat" if v > 55 else ""

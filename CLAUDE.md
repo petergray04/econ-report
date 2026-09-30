@@ -35,6 +35,9 @@ Repo: https://github.com/petergray04/econ-report (public) · Site: https://peter
 | `draft_edition.py` + `econ/draft.py` | Monday draft (shift p2→p1, first prints, consensus null + `needs_review`, markets refresh); `--finalize`. |
 | `.github/workflows/` | `deploy.yml` (push to main → Pages), `ci.yml` (PR checks), `monday-draft.yml` (cron Mon 10:00 UTC + dispatch → draft PR). |
 | `RUNBOOK.md` | The Monday process for the PR-based workflow. |
+| `.claude/skills/weekly-econ-edition/` + routine `trig_01JqTyQdUxHzk8S6RrbPyPXT` | Cloud routine (Mondays 12:00 UTC, Opus) that drafts, researches, builds and opens a **ready** PR. Unsourced values are left blank, never flagged (Peter, 2026-09-30: no hold-ups). |
+| `content/glossary.json` | Plain-English "what / why it matters" text behind each indicator's (i) button (website only). Every row key must have an entry (tested). |
+| `sentiment` block (optional in data) | AAII bull/neutral/bear % vs long-term averages + CNN Fear & Greed. Draft resets it to null weekly; hidden when empty. |
 | `out/` | Original pre-refactor outputs, kept as the visual reference. |
 
 The Claude-artifact leftovers (`window.claude` downloads script, `/_blob/` URLs, `/opt/pw-browsers`) are gone, and `archive.json` has been removed.
@@ -49,7 +52,7 @@ Decisions made: GitHub Pages, public site, FRED API key provided, masthead name 
    1. Bloomberg median, as quoted in First Trust Data Watch (ftportfolios.com → Commentary → Economic Research, first bullet: "versus the consensus expected …").
    2. Otherwise Dow Jones (CNBC), Reuters/LSEG or FactSet. Name the source in Notes.
    3. Otherwise a **published forecast range**, if a named source reported one (e.g. "estimates ranged from 3.2% to 3.5%"). Store it as `"cons": {"lo": 3.2, "hi": 3.5}` and put `Cons. range: <source>` in Notes; it renders "3.2–3.5%". Against a range, only an actual outside it is colored beat/miss. (Peter's decision, 2026-09-30.)
-   4. Otherwise `null`, rendered as "—". **Never estimate or invent a consensus or a range.** Rows with no published forecast at all (e.g. manufacturing payrolls, capacity utilization, MoM sub-rows) stay "—".
+   4. Otherwise `null`, rendered as "—". **Never estimate or invent a consensus or a range.** The same goes for any other value that can't be sourced: leave it blank and publish. Missing data never blocks an edition. Rows with no published forecast at all (e.g. manufacturing payrolls, capacity utilization, MoM sub-rows) stay "—".
 4. **Market data:**
    - Index levels and returns come from FRED (`SP500`, `DJIA`, `NASDAQCOM`).
    - EFA/EEM come from the Yahoo chart API.

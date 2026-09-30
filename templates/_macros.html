@@ -1,14 +1,23 @@
 {#- Shared building blocks for the PDF and the website. Each macro mirrors a function
     from the original build.py; output must stay number-for-number identical. -#}
 
-{% macro section_table(sec) -%}
+{#- (i) button + popover explaining a metric. Website only: `gloss` is empty for the PDF. -#}
+{% macro info(key, title, id) -%}
+{%- set g = gloss.get(key) -%}
+{%- if g %}<button type="button" class="info" popovertarget="{{ id }}" aria-label="What is {{ title }}?">i</button><div id="{{ id }}" popover class="gloss"><div class="gh"><b>{{ title }}</b><button type="button" class="gx" popovertarget="{{ id }}" popovertargetaction="hide" aria-label="Close">×</button></div><p>{{ g.what }}</p><p><b>Why it matters:</b> {{ g.why }}</p></div>{% endif -%}
+{%- endmacro %}
+
+{% macro section_table(sec, sid=0) -%}
 <section class="block"><h2>{{ sec.title }}</h2><div class="scroll"><table>
 <colgroup><col class="c-ind"><col class="c-per"><col class="c-n"><col class="c-n"><col class="c-per"><col class="c-n"><col class="c-n"><col class="c-note"><col class="c-src"></colgroup>
 <thead><tr><th></th><th colspan="3" class="grp">Prior period</th><th colspan="3" class="grp">Latest period</th><th></th><th></th></tr>
 <tr><th>Indicator</th><th>Period</th><th>Cons.</th><th>Actual</th><th>Period</th><th>Cons.</th><th>Actual</th><th>Notes</th><th>Source</th></tr></thead>
 <tbody>
+{%- set ns = namespace(parent='') %}
 {%- for r in sec.rows %}
-<tr class="{{ 'sub' if r.sub else '' }}"><th scope="row">{{ r.label }}</th>
+{%- if not r.sub %}{% set ns.parent = r.label %}{% endif %}
+{%- set key = (ns.parent ~ ' › ' ~ r.label) if r.sub else r.label %}
+<tr class="{{ 'sub' if r.sub else '' }}"><th scope="row">{{ r.label }}{{ info(key, (ns.parent ~ ': ' ~ r.label) if r.sub else r.label, 'g' ~ sid ~ '-' ~ loop.index) }}</th>
 {%- for p in (r.p1, r.p2) %}<td class="per">{{ p.period }}</td><td class="num{{ ' rng' if p.cons is mapping }}">{{ p.cons | fmt(r.fmt) }}</td><td class="num act {{ verdict(r, p) }}">{{ p.act | fmt(r.fmt) }}</td>{% endfor -%}
 <td class="note">{{ r.note }}</td><td class="src">{% if r.url %}<a href="{{ r.url }}">{{ r.src }}</a>{% else %}{{ r.src }}{% endif %}</td></tr>
 {%- endfor %}
@@ -31,7 +40,7 @@
 {% macro bottom(d) -%}
 {%- set g = d.gdp -%}
 <section class="bottom">
-<div class="card"><h3>Real GDP (QoQ SAAR)</h3><table class="mini"><thead><tr><th></th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th></tr></thead>
+<div class="card"><h3>Real GDP (QoQ SAAR){{ info("block:gdp", "Real GDP, GDPNow, ULC and ECI", "gb-gdp") }}</h3><table class="mini"><thead><tr><th></th><th>Q1</th><th>Q2</th><th>Q3</th><th>Q4</th></tr></thead>
 <tbody>
 {%- for y, vals in g.years.items() %}<tr><th scope="row">{{ y }}</th>{% for v in vals %}<td class="num">{{ v | fmt('pct') }}</td>{% endfor %}</tr>{% endfor -%}
 </tbody></table>
@@ -42,7 +51,7 @@ ECI (QoQ) — {% for k, v in g.eci.items() %}{{ k }}: {{ '%.1f' | format(v) }}%{
 <p class="fine src"><a href="https://www.bea.gov/data/gdp/gross-domestic-product">BEA</a> · <a href="https://www.atlantafed.org/cqer/research/gdpnow">Atlanta Fed</a> · <a href="https://www.bls.gov/lpc/">BLS</a></p></div>
 
 {%- set ms = d.ms %}
-<div class="card"><h3>Forecasts &amp; Targets</h3><table class="mini"><thead><tr><th>IMF GDP</th><th>U.S.</th><th>World</th></tr></thead><tbody>
+<div class="card"><h3>Forecasts &amp; Targets{{ info("block:targets", "Forecasts & Targets", "gb-tgt") }}</h3><table class="mini"><thead><tr><th>IMF GDP</th><th>U.S.</th><th>World</th></tr></thead><tbody>
 {%- for y, u, w in d.imf.rows %}<tr><th scope="row">{{ y }}</th><td class="num">{{ '%.1f' | format(u) }}%</td><td class="num">{{ '%.1f' | format(w) }}%</td></tr>{% endfor -%}
 </tbody></table>
 <p class="fine muted">{{ d.imf.edition }}</p>
@@ -54,7 +63,7 @@ ECI (QoQ) — {% for k, v in g.eci.items() %}{{ k }}: {{ '%.1f' | format(v) }}%{
 <p class="fine src"><a href="https://www.imf.org/en/Publications/WEO">IMF WEO</a> · public press coverage of MS Research</p></div>
 
 {%- set m = d.markets %}
-<div class="card"><h3>Markets</h3><table class="mini"><thead><tr><th></th><th>Level</th><th>2025</th><th>YTD</th></tr></thead><tbody>
+<div class="card"><h3>Markets{{ info("block:markets", "Markets", "gb-mkt") }}</h3><table class="mini"><thead><tr><th></th><th>Level</th><th>2025</th><th>YTD</th></tr></thead><tbody>
 {%- for n, lvl, a, b in m.rows %}<tr><th scope="row">{{ n }}</th><td class="num">{{ lvl }}</td><td class="num">{{ a | fmt('pct') }}</td><td class="num {{ 'beat' if b >= 0 else 'miss' }}">{{ b | fmt('pct') }}</td></tr>{% endfor -%}
 </tbody></table>
 <table class="mini"><thead><tr><th></th><th>End-2025</th><th>Now</th><th>Chg</th></tr></thead><tbody>
@@ -62,6 +71,36 @@ ECI (QoQ) — {% for k, v in g.eci.items() %}{{ k }}: {{ '%.1f' | format(v) }}%{
 </tbody></table>
 <p class="fine muted">{{ m.note }}</p><p class="fine src"><a href="https://fred.stlouisfed.org/series/SP500">FRED</a> · <a href="https://home.treasury.gov/resource-center/data-chart-center/interest-rates">U.S. Treasury</a></p></div>
 </section>
+{%- endmacro %}
+
+{#- Market sentiment: AAII weekly survey + CNN Fear & Greed. Optional block; hidden when absent or empty. -#}
+{% macro sentiment(d) -%}
+{%- set st = d.get('sentiment') -%}
+{%- if st and ((st.aaii and st.aaii.bull is not none) or (st.fear_greed and st.fear_greed.value is not none)) -%}
+{%- set a = st.aaii -%}{%- set f = st.fear_greed -%}
+<section class="card senti"><h3>Market Sentiment{{ info("block:sentiment", "Market sentiment", "gb-senti") }}</h3><div class="sgrid">
+<div class="aaii">
+{%- if a and a.bull is not none %}
+{%- set mood = mood_of(a) %}
+<div class="shead"><span>AAII investor survey · week ending {{ a.week }}</span><b class="mood {{ mood.cls }}">{{ mood.label }}</b></div>
+<div class="sbar" role="img" aria-label="Bullish {{ a.bull }}%, neutral {{ a.neutral }}%, bearish {{ a.bear }}%"><i class="b" style="width:{{ a.bull }}%"></i><i class="n" style="width:{{ a.neutral }}%"></i><i class="r" style="width:{{ a.bear }}%"></i></div>
+<table class="mini"><thead><tr><th></th><th>Bullish</th><th>Neutral</th><th>Bearish</th><th>Bull–bear</th></tr></thead><tbody>
+<tr><th scope="row">This week</th><td class="num beat">{{ a.bull | fmt('pct') }}</td><td class="num">{{ a.neutral | fmt('pct') }}</td><td class="num miss">{{ a.bear | fmt('pct') }}</td><td class="num">{{ spread(a.bull, a.bear) }}</td></tr>
+{%- if a.avg_bull is not none %}<tr><th scope="row">Long-term avg.</th><td class="num">{{ a.avg_bull | fmt('pct') }}</td><td class="num">{{ a.avg_neutral | fmt('pct') }}</td><td class="num">{{ a.avg_bear | fmt('pct') }}</td><td class="num">{{ spread(a.avg_bull, a.avg_bear) }}</td></tr>{% endif %}
+</tbody></table>
+<p class="fine src"><a href="{{ a.url }}">AAII Sentiment Survey</a></p>
+{%- else %}<p class="fine muted">AAII survey: not available this week.</p>{% endif %}
+</div>
+<div class="fg">
+{%- if f and f.value is not none %}
+<div class="shead"><span>CNN Fear &amp; Greed · {{ f.asof }}</span></div>
+<div class="fgv"><span class="fgn">{{ '%.0f' | format(f.value) }}</span><span class="fgl {{ fg_class(f.value) }}">{{ f.label }}</span></div>
+<div class="fgscale" aria-hidden="true"><i style="left:{{ f.value }}%"></i></div><div class="fgends"><span>0 Extreme fear</span><span>100 Extreme greed</span></div>
+<p class="fine src"><a href="{{ f.url }}">CNN Fear &amp; Greed Index</a></p>
+{%- else %}<p class="fine muted">Fear &amp; Greed: not available this week.</p>{% endif %}
+</div></div>
+<p class="fine muted">Sentiment describes investor mood, often read as a contrarian signal; it is not a forecast.</p></section>
+{%- endif -%}
 {%- endmacro %}
 
 {% macro method(d) -%}

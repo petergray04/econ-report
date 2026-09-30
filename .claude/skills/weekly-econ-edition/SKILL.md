@@ -21,7 +21,13 @@ Read `CLAUDE.md` (data rules) and `RUNBOOK.md` (release calendar, sources) first
    4. Otherwise `null` ("—").
    - **Never compute, average, infer or make up a consensus or a range.** A range you built yourself from scattered forecasts counts as an estimate. Don't do it.
    - Many rows have no published forecast at all: manufacturing payrolls, capacity utilization, the MoM sub-rows, retail ex auto & gas, LEI, Case-Shiller, the mortgage rate, core PCE. `null` is the correct answer for them.
-5. **Every number you enter must have a source you actually opened this session.** Record it in the PR's source log with the URL and the exact phrase you relied on. If sources conflict, or you can't open the primary source, keep the row's `needs_review` and explain why.
+5. **Every number you enter must have a source you actually opened this session.** Record it in the PR's source log with the URL and the exact phrase you relied on.
+   - **If you can't source a value, leave it blank and move on. Never hold up the edition.**
+     - Consensus: set it to `null`, which shows "—".
+     - Manual row whose new release you can't confirm: leave the row exactly as it was last week. Those older periods are still accurate.
+     - Sentiment readings: set them to `null`.
+   - Then remove the row's flag and list the item under **Left blank** in the PR.
+   - If sources conflict, use the primary agency or publisher. If you still can't tell, leave the value blank.
 6. **Existing and pending home sales** come from NAR releases only. **Morgan Stanley** figures come from public press only, and the caveat text must stay.
 7. **On deck (`watch`)** lists only dates confirmed on the agency's own release calendar.
 
@@ -64,13 +70,17 @@ Open `data/<date>.json` and go through each row with `needs_review`. Its `review
   - If yes, move `p2` to `p1`, then fill the new `p2`: `period` in the same label style, `act` from the primary source, and `cons` per rule 4.
   - If no, leave the values alone.
 - **When a row is fully sourced,** delete its `needs_review` and `review` keys.
-- **When something can't be sourced,** leave the value `null` or unchanged and keep the flag. Replace `review` with one line saying what you tried.
+- **When something can't be sourced,** leave the value `null`, or leave a manual row unchanged, then delete the flag anyway. Record what you tried under **Left blank** in the PR. No row may keep `needs_review`, so the edition is always publishable.
 
 ### 4. Other blocks (the `draft_meta.todo` list)
 - **`kpis`:** six headline prints from this edition's data. Use `"up"`, `"dn"` or `""` tone, and details like "vs +55K consensus". The KPI values must equal the table and markets numbers.
 - **`story`:** one paragraph on what changed this week and why it matters. Use only facts that are in the edition.
 - **`watch`:** the next 4–6 major releases, with dates confirmed on agency calendars (BLS, BEA, Census, Fed, UMich, ISM).
 - **`gdp`, `imf`, `ms`:** update only if a new estimate, WEO or target was published, and source it.
+- **`sentiment`:** the draft resets it to nulls every week.
+  - **AAII**, from https://www.aaii.com/sentimentsurvey (published Thursdays): fill `week` as the week-ending date in "M/D" form, `bull`, `neutral` and `bear` as percentages that sum to 100, and `avg_bull`, `avg_neutral` and `avg_bear` as the long-term averages AAII shows.
+  - **CNN Fear & Greed**, from https://www.cnn.com/markets/fear-and-greed: fill `value` (0–100), `label` exactly as CNN shows it (for example "Fear") and `asof` in "Mon D" form.
+  - If a page can't be read, try a reputable page quoting that week's figures, such as Reuters, MarketWatch or Investing.com, and cite it. Otherwise leave the values null. The block hides itself when it's empty.
 - **Markets:** spot-check one index level against FRED and `data_through`. If it says `EFA/EEM: NOT REFRESHED`, fill the EFA/EEM closes from a public quote page and fix that text.
 
 ### 5. Finalize and build
@@ -81,7 +91,7 @@ python build.py
 python -m pytest -q
 ```
 - If the PDF has more than 2 pages, shorten Notes. Never change the CSS or drop rows.
-- If some rows are still flagged, skip `--finalize`. The PR stays a draft and lists them.
+- `--finalize` must succeed. If it refuses, a flag is left somewhere: resolve it or blank it, then retry. Always open a normal (ready) PR, never a draft.
 
 ### 6. Open the pull request (never merge)
 ```
@@ -89,11 +99,11 @@ git switch -c edition/<date>
 git add data/<date>.json
 git commit -m "Edition <date>"
 git push -u origin edition/<date>
-gh pr create --base main --title "Edition <date>" --body-file out/pr_final.md   # add --draft if anything is unresolved
+gh pr create --base main --title "Edition <date>" --body-file out/pr_final.md   # ready for review, never --draft
 ```
 Write `out/pr_final.md` with these sections:
 1. **Summary:** what changed this week, in 2–3 lines.
-2. **Needs your decision:** every row still flagged, and why.
+2. **Left blank:** every value you couldn't source, and where you looked. Peter can fill any of these in before merging if he finds a source.
 3. **Source log:** a table with `Row | Period | Field | Value | Source (URL) | Exact quote`, covering every consensus, range and manual actual you entered.
 4. **Checks:** health check 70/70, validate result, PDF page count, tests.
 

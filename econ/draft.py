@@ -167,6 +167,13 @@ def make_draft(prev, date, fred=None):
     d["edition_label"] = edition_label(date)
     d["status"] = "draft"
     d["consensus_policy"] = CONSENSUS_POLICY
+    d["sentiment"] = {   # never carry last week's readings forward; the routine fills these (or leaves null)
+        "aaii": {"week": "", "bull": None, "neutral": None, "bear": None,
+                 "avg_bull": None, "avg_neutral": None, "avg_bear": None,
+                 "url": "https://www.aaii.com/sentimentsurvey"},
+        "fear_greed": {"value": None, "label": None, "asof": "",
+                       "url": "https://www.cnn.com/markets/fear-and-greed"},
+    }
     log, todo = [], []
     update_rows(d, fetcher, log)
     update_markets(d, fetcher, date, todo, log)
@@ -177,6 +184,8 @@ def make_draft(prev, date, fred=None):
         "GDP block: check for a new GDP estimate, GDPNow, ULC, ECI",
         "Forecasts & Targets: check IMF WEO / Morgan Stanley (public press only; keep the caveat)",
         "Markets: spot-check the refreshed levels and the S&P/10-yr KPI tiles",
+        "Sentiment: AAII survey (published Thursdays: bullish/neutral/bearish % + long-term averages, "
+        "week-ending date) and CNN Fear & Greed (value, label, date). Leave null if not sourced",
     ]
     d["draft_meta"] = {"based_on": prev["edition"], "generated": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
                        "todo": todo}

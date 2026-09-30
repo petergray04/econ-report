@@ -17,9 +17,14 @@ class Rows(HTMLParser):
     def __init__(self):
         super().__init__()
         self.depth_block, self.in_tbody, self.row, self.cell, self.rows, self.classes = 0, False, None, None, [], []
+        self.skip = 0          # inside an (i) button or its popover: not part of the cell's value
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
+        if self.skip or (tag == "button" and "info" in (a.get("class") or "")) or "popover" in a:
+            if tag not in ("br", "img", "input"):
+                self.skip += 1
+            return
         if tag == "section" and "block" in (a.get("class") or ""):
             self.depth_block += 1
         elif self.depth_block and tag == "tbody":
@@ -31,6 +36,9 @@ class Rows(HTMLParser):
             self.classes.append(a.get("class") or "")
 
     def handle_endtag(self, tag):
+        if self.skip:
+            self.skip -= 1
+            return
         if tag in ("td", "th") and self.cell is not None:
             self.row.append(self.cell.strip())
             self.cell = None
@@ -43,7 +51,7 @@ class Rows(HTMLParser):
             self.depth_block -= 1
 
     def handle_data(self, data):
-        if self.cell is not None:
+        if self.cell is not None and not self.skip:
             self.cell += data
 
 
@@ -118,3 +126,40 @@ def test_range_renders_in_table():
     cells = {c[0]: c for c, _ in parse(html)}
     assert cells["Nonfarm Payrolls (000s)"][5] == "40–90"
     assert 'class="num rng">40–90<' in html
+
+
+def test_every_indicator_has_an_explanation_and_numbers_survive_the_buttons():
+    from econ.render import glossary
+    from econ.series import row_keys
+    gloss = glossary()
+    keys = [k for sec in REF["sections"] for k, _ in row_keys(sec)]
+    assert [k for k in keys if k not in gloss] == []
+    for k in ("block:gdp", "block:targets", "block:markets", "block:sentiment"):
+        assert k in gloss
+    html = render("edition.html", d=REF, archive=archive_entries([REF]), latest=REF, root="", is_latest=True, gloss=gloss)
+    assert html.count('class="info"') == len(keys) + 3          # every row + GDP/targets/markets cards
+    got = parse(html)
+    assert [c for c, _ in got] == [e for _, e in expected_rows(REF)]
+    pdf = render("report_pdf.html", d=REF)
+    assert 'class="info"' not in pdf and "popover" not in pdf    # buttons are website-only
+
+
+SENTI = {"aaii": {"week": "9/24", "bull": 32.5, "neutral": 28.0, "bear": 39.5,
+                  "avg_bull": 37.5, "avg_neutral": 31.5, "avg_bear": 31.0,
+                  "url": "https://www.aaii.com/sentimentsurvey"},
+         "fear_greed": {"value": 38, "label": "Fear", "asof": "Sep 29",
+                        "url": "https://www.cnn.com/markets/fear-and-greed"}}
+
+
+def test_sentiment_block_renders_and_hides_when_blank():
+    import copy
+    from econ.formatting import mood_of, spread
+    d = copy.deepcopy(REF)
+    d["sentiment"] = SENTI
+    html = render("edition.html", d=d, archive=archive_entries([d]), latest=d, root="", is_latest=True)
+    assert "Market Sentiment" in html and "Bearish" in html and "−7.0 pts" in html and ">38<" in html
+    assert mood_of(SENTI["aaii"]) == {"label": "Bearish", "cls": "miss"} and spread(37.5, 31.0) == "+6.5 pts"
+    d["sentiment"] = {"aaii": dict(SENTI["aaii"], bull=None, neutral=None, bear=None),
+                      "fear_greed": dict(SENTI["fear_greed"], value=None, label=None)}
+    assert "Market Sentiment" not in render("edition.html", d=d, archive=[], latest=d, root="", is_latest=True)
+    assert "Market Sentiment" not in render("report_pdf.html", d=REF)   # older editions have no block

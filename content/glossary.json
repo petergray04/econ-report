@@ -1,0 +1,199 @@
+{
+ "_about": "Plain-English explanations shown behind the (i) button next to each indicator on the website. Keys are row keys (sub-rows are 'Parent › Label', see econ/series.py row_keys). 'what' = what it measures, 'why' = why markets and advisors watch it. Edit freely; no numbers belong here.",
+ "Initial Jobless Claims (000s)": {
+  "what": "The number of people who filed a first-time claim for state unemployment benefits in the week, published every Thursday by the Department of Labor.",
+  "why": "The most timely read on layoffs. A sustained rise usually shows up before a weakening in the monthly jobs report. Lower is better."
+ },
+ "Continuing Claims (000s)": {
+  "what": "The number of people still receiving unemployment benefits after their first week, reported with a one-week lag to initial claims.",
+  "why": "Shows how easy it is for laid-off workers to find new jobs. Rising continuing claims mean people are staying unemployed longer. Lower is better."
+ },
+ "ADP Private Employment (000s)": {
+  "what": "Monthly change in private-sector jobs estimated by payroll processor ADP from its clients' payroll data, released two days before the government jobs report.",
+  "why": "An early, independent read on hiring. It often differs from the official payrolls number, so markets treat it as a preview rather than a forecast."
+ },
+ "Nonfarm Payrolls (000s)": {
+  "what": "The monthly change in the number of U.S. jobs outside farming, from the Bureau of Labor Statistics' survey of employers (the Employment Situation report, usually the first Friday of the month).",
+  "why": "The single most market-moving economic release. It drives expectations for Fed policy, consumer spending and growth. Earlier months are revised, so the Notes show revisions."
+ },
+ "Nonfarm Payrolls (000s) › Private Payrolls": {
+  "what": "The part of the payrolls change that comes from private businesses, excluding federal, state and local government jobs.",
+  "why": "Shows whether hiring is coming from the business sector, which reflects demand, rather than from government."
+ },
+ "Nonfarm Payrolls (000s) › Manufacturing Payrolls": {
+  "what": "The monthly change in factory jobs, from the same BLS employer survey.",
+  "why": "A gauge of the goods-producing economy, which is sensitive to interest rates, trade and the business cycle."
+ },
+ "Unemployment Rate": {
+  "what": "The share of the labor force (people working or actively looking for work) who are unemployed, from the BLS household survey.",
+  "why": "The headline measure of labor-market slack and one half of the Fed's mandate. Lower is better, although a very low rate can add to wage and price pressure."
+ },
+ "UMich Consumer Sentiment": {
+  "what": "An index of how households feel about their finances and the economy, from the University of Michigan's monthly survey. A preliminary reading comes mid-month and a final reading at month-end.",
+  "why": "Mood can lead spending. The survey also reports households' inflation expectations, which the Fed watches closely."
+ },
+ "JOLTS Job Openings (000s)": {
+  "what": "The number of unfilled job openings at the end of the month, from the BLS Job Openings and Labor Turnover Survey. It is released with about a two-month lag.",
+  "why": "Measures employers' demand for workers. Openings well above the number of unemployed signal a tight labor market and upward pressure on wages."
+ },
+ "Consumer Credit ($B)": {
+  "what": "The monthly change in outstanding consumer debt, covering revolving credit (credit cards) and nonrevolving loans (auto and student loans), from the Federal Reserve's G.19 release.",
+  "why": "Shows how much households are borrowing to spend. Strong growth can support spending, but it can also signal strain when incomes are not keeping up."
+ },
+ "Personal Income (MoM)": {
+  "what": "The monthly percentage change in all income households receive (wages, business income, interest, dividends and government benefits), from the Bureau of Economic Analysis.",
+  "why": "Income growth is what funds future spending. Comparing it with spending shows whether households are saving or drawing down savings."
+ },
+ "Personal Spending (MoM)": {
+  "what": "The monthly percentage change in consumer spending on goods and services (personal consumption expenditures) in dollar terms, from the BEA.",
+  "why": "Consumer spending is about two-thirds of U.S. GDP, so this is the main engine of growth."
+ },
+ "Retail Sales (MoM)": {
+  "what": "The monthly percentage change in sales at stores, online retailers and restaurants, from the Census Bureau's advance estimate. It is not adjusted for inflation.",
+  "why": "The earliest monthly read on consumer demand for goods. Strong retail sales support growth, but they can also keep inflation elevated."
+ },
+ "Retail Sales (MoM) › Ex Auto & Gas": {
+  "what": "Retail sales excluding auto dealers and gas stations, which are the two most volatile categories.",
+  "why": "Strips out swings from car sales and gasoline prices to show the underlying trend in consumer demand."
+ },
+ "Industrial Production (MoM)": {
+  "what": "The monthly percentage change in real output of U.S. factories, mines and utilities, from the Federal Reserve's G.17 release.",
+  "why": "Tracks the goods side of the economy. It is cyclical and often turns before the broader economy does."
+ },
+ "Capacity Utilization": {
+  "what": "The share of the industrial sector's potential output that is actually being used, from the Federal Reserve.",
+  "why": "High utilization means little spare capacity, which can lead to more investment and price pressure. Low utilization signals slack."
+ },
+ "Durable Goods Orders (MoM)": {
+  "what": "The monthly percentage change in new orders for goods meant to last three years or more, such as machinery, aircraft and appliances, from the Census Bureau.",
+  "why": "A forward-looking gauge of business investment and manufacturing. It swings with lumpy aircraft orders, so the Notes show the ex-transportation figure."
+ },
+ "Factory Orders (MoM)": {
+  "what": "The monthly percentage change in new orders for all manufactured goods, durable and nondurable, from the Census Bureau's full factory report.",
+  "why": "Broadens the durable-goods picture. Rising orders point to more production in the months ahead."
+ },
+ "ISM Manufacturing PMI": {
+  "what": "A monthly survey index of purchasing managers at manufacturers, from the Institute for Supply Management. It covers new orders, production, employment, deliveries and inventories.",
+  "why": "A reading above 50 means manufacturing is expanding; below 50 means it is contracting. It is one of the earliest monthly reads on the business cycle."
+ },
+ "ISM Services PMI": {
+  "what": "The services-sector version of the ISM survey, covering businesses such as retail, finance, healthcare and hospitality.",
+  "why": "Services are most of the economy. Above 50 means expansion. Its prices-paid component is watched as an early signal on services inflation."
+ },
+ "NFIB Small Business Optimism": {
+  "what": "An index of how small-business owners view the economy, sales, hiring and credit, from the National Federation of Independent Business. It is benchmarked so that 1986 = 100.",
+  "why": "Small firms employ nearly half of private-sector workers. The index's long-run average is about 98, so readings above that signal confidence."
+ },
+ "Leading Economic Index (MoM)": {
+  "what": "The Conference Board's composite of ten forward-looking indicators, including jobless claims, new orders, building permits, the stock market and the yield curve.",
+  "why": "Designed to signal turning points in the business cycle. Several months of declines have historically come before recessions."
+ },
+ "Construction Spending (MoM)": {
+  "what": "The monthly percentage change in the value of new construction put in place (residential, commercial and public), from the Census Bureau.",
+  "why": "Reflects investment in buildings and infrastructure, which is sensitive to interest rates and feeds directly into GDP."
+ },
+ "NAHB Housing Market Index": {
+  "what": "A monthly survey of home builders' confidence in the market for new single-family homes, from the National Association of Home Builders. It runs from 0 to 100.",
+  "why": "Above 50 means more builders see conditions as good than poor. It is an early read on new home construction and sales."
+ },
+ "Housing Starts (000s)": {
+  "what": "The number of new homes on which construction began, at a seasonally adjusted annual rate, from the Census Bureau.",
+  "why": "Housing is a key rate-sensitive sector. Starts drive construction jobs and spending on materials and furnishings."
+ },
+ "Housing Starts (000s) › % Month over Month": {
+  "what": "The percentage change in housing starts from the previous month.",
+  "why": "Shows the direction and momentum of new construction. Monthly moves are volatile, so the trend matters more than any single month."
+ },
+ "Building Permits (000s)": {
+  "what": "The number of permits issued for new homes, at a seasonally adjusted annual rate, from the Census Bureau.",
+  "why": "Permits come before starts, so they are a leading indicator of future home construction."
+ },
+ "Building Permits (000s) › % Month over Month": {
+  "what": "The percentage change in building permits from the previous month.",
+  "why": "Shows momentum in builders' plans for the months ahead."
+ },
+ "Existing Home Sales (mil.)": {
+  "what": "Closed sales of previously owned homes, at a seasonally adjusted annual rate, from the National Association of Realtors.",
+  "why": "The bulk of the housing market. It reflects affordability, mortgage rates and household mobility. The Notes show the median sale price."
+ },
+ "Existing Home Sales (mil.) › % Month over Month": {
+  "what": "The percentage change in existing home sales from the previous month.",
+  "why": "Shows momentum in resale housing activity."
+ },
+ "Pending Home Sales (MoM)": {
+  "what": "The monthly change in the National Association of Realtors' index of signed contracts on existing homes that have not closed yet.",
+  "why": "Contracts close in one to two months, so this leads existing home sales."
+ },
+ "New Home Sales (000s)": {
+  "what": "Sales of newly built single-family homes, at a seasonally adjusted annual rate, from the Census Bureau. Sales are counted when the contract is signed.",
+  "why": "A timely read on demand for new construction. It is volatile and heavily revised."
+ },
+ "New Home Sales (000s) › % Month over Month": {
+  "what": "The percentage change in new home sales from the previous month.",
+  "why": "Shows momentum in demand for new homes. Large swings are common, so look at the trend."
+ },
+ "Case-Shiller 20-City (YoY, NSA)": {
+  "what": "The year-over-year change in the S&P Cotality Case-Shiller index of home prices in 20 major U.S. metro areas. It tracks repeat sales of the same homes and is reported with about a two-month lag.",
+  "why": "The benchmark for home-price trends. Home prices affect household wealth, affordability and the shelter component of inflation."
+ },
+ "Freddie Mac 30-Yr Mortgage": {
+  "what": "The average rate on a 30-year fixed-rate mortgage for borrowers with strong credit, from Freddie Mac's weekly Primary Mortgage Market Survey, published on Thursdays.",
+  "why": "The key cost of buying a home. It follows the 10-year Treasury yield and drives housing affordability and refinancing activity."
+ },
+ "CPI (MoM)": {
+  "what": "The monthly percentage change in the Consumer Price Index, the Bureau of Labor Statistics' measure of prices paid by urban consumers for a basket of goods and services. Seasonally adjusted.",
+  "why": "The most-watched inflation gauge. It moves bond yields and Fed expectations. Lower is better."
+ },
+ "CPI (YoY)": {
+  "what": "The percentage change in the Consumer Price Index over the past 12 months, not seasonally adjusted. This is the headline inflation rate.",
+  "why": "The inflation rate people hear about. The Fed's goal is about 2% inflation, measured by PCE, which usually runs a little below CPI."
+ },
+ "CPI (YoY) › Ex Food & Energy (MoM)": {
+  "what": "'Core' CPI: the monthly change in consumer prices excluding food and energy, which are volatile.",
+  "why": "A better signal of underlying inflation trends. The Fed and markets focus on core."
+ },
+ "CPI (YoY) › Ex Food & Energy (YoY)": {
+  "what": "Core CPI over the past 12 months, excluding food and energy.",
+  "why": "Shows persistent inflation pressure without swings in gas and grocery prices."
+ },
+ "PPI Final Demand (MoM)": {
+  "what": "The monthly percentage change in the Producer Price Index for final demand, which measures prices received by U.S. producers for goods, services and construction. From the BLS.",
+  "why": "Measures inflation at the wholesale level, which can pass through to consumer prices."
+ },
+ "PPI Final Demand (YoY)": {
+  "what": "The Producer Price Index for final demand over the past 12 months, not seasonally adjusted.",
+  "why": "Shows the trend in business input and selling costs. A rise can squeeze profit margins or be passed on to consumers."
+ },
+ "PPI Final Demand (YoY) › Ex Food & Energy (MoM)": {
+  "what": "'Core' PPI: the monthly change in producer prices excluding food and energy.",
+  "why": "Filters out commodity swings to show underlying pipeline inflation."
+ },
+ "PPI Final Demand (YoY) › Ex Food & Energy (YoY)": {
+  "what": "Core PPI over the past 12 months.",
+  "why": "The underlying trend in producer prices."
+ },
+ "Core PCE (YoY)": {
+  "what": "The 12-month change in the Personal Consumption Expenditures price index excluding food and energy, from the Bureau of Economic Analysis.",
+  "why": "The Federal Reserve's preferred inflation gauge. Its 2% inflation target is measured on PCE. Lower is better while inflation is above target."
+ },
+ "Core PCE (QoQ SAAR)": {
+  "what": "Core PCE inflation for the latest quarter, expressed as a seasonally adjusted annual rate, from the BEA's GDP report.",
+  "why": "Shows the recent pace of underlying inflation, which reacts faster than the 12-month rate."
+ },
+ "block:gdp": {
+  "what": "Real GDP is the inflation-adjusted value of all goods and services the U.S. produces, reported by the BEA as a quarterly percentage change at an annual rate (SAAR). GDPNow is the Atlanta Fed's model estimate of the current quarter before the official number is released.",
+  "why": "The broadest measure of economic growth. Two negative quarters are often, though not always, associated with recession. Unit labor costs and the Employment Cost Index track labor costs that feed inflation."
+ },
+ "block:targets": {
+  "what": "Growth forecasts from the IMF's World Economic Outlook and, from public press coverage, Morgan Stanley's S&P 500 and earnings targets.",
+  "why": "Shows where major forecasters expect growth and markets to head. Targets are opinions, not data."
+ },
+ "block:markets": {
+  "what": "Levels and price returns (excluding dividends) for major U.S. and international stock indexes, plus 10- and 30-year Treasury yields, measured from the end-2025 close.",
+  "why": "Shows how markets are pricing the economic data. Rising yields raise borrowing costs across the economy."
+ },
+ "block:sentiment": {
+  "what": "Two gauges of investor mood. The AAII Sentiment Survey asks individual investors each week whether they expect stocks to be higher (bullish), about the same (neutral) or lower (bearish) in six months. CNN's Fear & Greed Index combines seven market signals into a 0–100 score.",
+  "why": "Sentiment is often read as a contrarian signal: extreme bearishness or fear has historically come near market lows, and extreme bullishness or greed near highs. It describes mood, not a forecast."
+ }
+}

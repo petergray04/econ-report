@@ -1,4 +1,4 @@
-{%- import "_macros.html" as m -%}
+{%- import "_macros.html" as m with context -%}
 {%- set secs = d.sections -%}
 {%- macro mast() -%}
 <header class="mast"><div><div class="kick">Weekly briefing · two most recent releases per indicator</div><h1>{{ site.name }}</h1></div><div class="date"><b>{{ d.edition_label }}</b>{{ d.data_through }}</div></header>
@@ -13,5 +13,5 @@
 {% include "css/pdf.css" %}
 </style></head><body>
 <div class="page">{{ mast() }}{{ m.kpis(d) }}{{ m.story_watch(d) }}{{ m.section_table(secs[0]) }}{{ m.section_table(secs[1]) }}{{ m.section_table(secs[2]) }}{{ foot(1) }}</div>
-<div class="page">{{ m.section_table(secs[3]) }}{{ m.section_table(secs[4]) }}{{ m.bottom(d) }}{{ m.method(d) }}{{ foot(2) }}</div>
+<div class="page">{{ m.section_table(secs[3]) }}{{ m.section_table(secs[4]) }}{{ m.bottom(d) }}{{ m.sentiment(d) }}{{ m.method(d) }}{{ foot(2) }}</div>
 </body></html>
