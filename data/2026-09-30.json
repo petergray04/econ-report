@@ -1,0 +1,1071 @@
+{
+ "edition": "2026-09-30",
+ "edition_label": "Wednesday, September 30, 2026",
+ "data_through": "Market data as of Sep 29, 2026 close",
+ "sections": [
+  {
+   "title": "Labor Market",
+   "rows": [
+    {
+     "label": "Initial Jobless Claims (000s)",
+     "p1": {
+      "period": "Wk 9/12",
+      "cons": 207,
+      "act": 196
+     },
+     "p2": {
+      "period": "Wk 9/19",
+      "cons": 201,
+      "act": 197
+     },
+     "fmt": "k",
+     "better": "lower",
+     "note": "Consensus: Reuters; wk 9/12 rev. to 198K; 4-wk avg 202.3K",
+     "src": "DOL ETA",
+     "url": "https://www.dol.gov/ui/data.pdf",
+     "sub": false
+    },
+    {
+     "label": "Continuing Claims (000s)",
+     "p1": {
+      "period": "Wk 9/5",
+      "cons": 1779,
+      "act": 1730
+     },
+     "p2": {
+      "period": "Wk 9/12",
+      "cons": null,
+      "act": 1719
+     },
+     "fmt": "k",
+     "better": "lower",
+     "note": "Wk 9/5 rev. to 1,717K",
+     "src": "DOL ETA",
+     "url": "https://www.dol.gov/ui/data.pdf",
+     "sub": false,
+     "needs_review": true,
+     "review": [
+      "No named-source consensus found for wk 9/12 (Reuters 9/24 story gives none; FT publishes no claims Data Watch) \u2014 left null"
+     ]
+    },
+    {
+     "label": "ADP Private Employment (000s)",
+     "p1": {
+      "period": "Jul",
+      "cons": 75,
+      "act": 44
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 47,
+      "act": 38
+     },
+     "fmt": "k",
+     "better": "higher",
+     "note": "Jul revised to +46K; slowest month since Jan",
+     "src": "ADP NER",
+     "url": "https://adpemploymentreport.com/",
+     "sub": false
+    },
+    {
+     "label": "Nonfarm Payrolls (000s)",
+     "p1": {
+      "period": "Jul",
+      "cons": 80,
+      "act": -23
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 55,
+      "act": 162
+     },
+     "fmt": "k",
+     "better": "higher",
+     "note": "Jul rev. to +21K; Jun+Jul net +55K revision",
+     "src": "BLS CES",
+     "url": "https://www.bls.gov/news.release/empsit.nr0.htm",
+     "sub": false
+    },
+    {
+     "label": "Private Payrolls",
+     "p1": {
+      "period": "Jul",
+      "cons": 78,
+      "act": 30
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 45,
+      "act": 127
+     },
+     "fmt": "k",
+     "better": "higher",
+     "note": "Consensus: LSEG",
+     "src": "BLS CES",
+     "url": "https://www.bls.gov/news.release/empsit.nr0.htm",
+     "sub": true
+    },
+    {
+     "label": "Manufacturing Payrolls",
+     "p1": {
+      "period": "Jul",
+      "cons": null,
+      "act": 5
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": null,
+      "act": 16
+     },
+     "fmt": "k",
+     "better": "higher",
+     "note": "No public consensus",
+     "src": "BLS CES",
+     "url": "https://www.bls.gov/news.release/empsit.nr0.htm",
+     "sub": true
+    },
+    {
+     "label": "Unemployment Rate",
+     "p1": {
+      "period": "Jul",
+      "cons": 4.2,
+      "act": 4.1
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 4.1,
+      "act": 4.1
+     },
+     "fmt": "pct1",
+     "better": "lower",
+     "note": "U-6 7.7%; participation 61.6% (Aug)",
+     "src": "BLS CPS",
+     "url": "https://www.bls.gov/news.release/empsit.nr0.htm",
+     "sub": false
+    },
+    {
+     "label": "UMich Consumer Sentiment",
+     "p1": {
+      "period": "Sep (P)",
+      "cons": 51.0,
+      "act": 47.8
+     },
+     "p2": {
+      "period": "Sep (F)",
+      "cons": 47.6,
+      "act": 48.1
+     },
+     "fmt": "idx",
+     "better": "higher",
+     "note": "Consensus: Reuters; 1-yr infl. exp. 4.6%, long-run 3.4%",
+     "src": "UMich SCA",
+     "url": "https://www.sca.isr.umich.edu/",
+     "sub": false
+    },
+    {
+     "label": "JOLTS Job Openings (000s)",
+     "p1": {
+      "period": "Jul",
+      "cons": 7300,
+      "act": 7271
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 7225,
+      "act": 7079
+     },
+     "fmt": "k",
+     "better": "higher",
+     "note": "Consensus: Reuters; Jul rev. to 7,335K",
+     "src": "BLS JOLTS",
+     "url": "https://www.bls.gov/news.release/jolts.nr0.htm",
+     "sub": false
+    }
+   ]
+  },
+  {
+   "title": "Personal / Household Sector",
+   "rows": [
+    {
+     "label": "Consumer Credit ($B)",
+     "p1": {
+      "period": "Jun",
+      "cons": 11.9,
+      "act": 14.2
+     },
+     "p2": {
+      "period": "Jul",
+      "cons": 11.3,
+      "act": 18.1
+     },
+     "fmt": "b",
+     "better": "higher",
+     "note": "Nonrevolving +$15.3B, biggest since Jun-2023",
+     "src": "Fed G.19",
+     "url": "https://www.federalreserve.gov/releases/g19/current/",
+     "sub": false
+    },
+    {
+     "label": "Personal Income (MoM)",
+     "p1": {
+      "period": "Jun",
+      "cons": 0.3,
+      "act": 0.2
+     },
+     "p2": {
+      "period": "Jul",
+      "cons": 0.2,
+      "act": 0.4
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Saving rate 3.0% (Jul)",
+     "src": "BEA PI&O",
+     "url": "https://www.bea.gov/data/income-saving/personal-income",
+     "sub": false
+    },
+    {
+     "label": "Personal Spending (MoM)",
+     "p1": {
+      "period": "Jun",
+      "cons": 0.4,
+      "act": 0.3
+     },
+     "p2": {
+      "period": "Jul",
+      "cons": 0.1,
+      "act": 0.2
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Real PCE flat in Jul",
+     "src": "BEA PI&O",
+     "url": "https://www.bea.gov/data/income-saving/personal-income",
+     "sub": false
+    },
+    {
+     "label": "Retail Sales (MoM)",
+     "p1": {
+      "period": "Jul",
+      "cons": 0.1,
+      "act": -0.6
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 0.8,
+      "act": 1.2
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Strongest month since March",
+     "src": "Census MARTS",
+     "url": "https://www.census.gov/retail/sales.html",
+     "sub": false
+    },
+    {
+     "label": "Ex Auto & Gas",
+     "p1": {
+      "period": "Jul",
+      "cons": null,
+      "act": -0.2
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": null,
+      "act": 1.2
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Ex-autos Aug +1.4% vs +0.6% est.",
+     "src": "Census MARTS",
+     "url": "https://www.census.gov/retail/sales.html",
+     "sub": true
+    }
+   ]
+  },
+  {
+   "title": "Industrial & Manufacturing Sector",
+   "rows": [
+    {
+     "label": "Industrial Production (MoM)",
+     "p1": {
+      "period": "Jul",
+      "cons": 0.3,
+      "act": 0.2
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 0.3,
+      "act": 0.0
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Mfg output \u22120.3% in Aug, first drop of 2026",
+     "src": "Fed G.17",
+     "url": "https://www.federalreserve.gov/releases/g17/current/",
+     "sub": false
+    },
+    {
+     "label": "Capacity Utilization",
+     "p1": {
+      "period": "Jul",
+      "cons": null,
+      "act": 76.3
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": null,
+      "act": 76.3
+     },
+     "fmt": "pct1",
+     "better": "higher",
+     "note": "",
+     "src": "Fed G.17",
+     "url": "https://www.federalreserve.gov/releases/g17/current/",
+     "sub": false
+    },
+    {
+     "label": "Durable Goods Orders (MoM)",
+     "p1": {
+      "period": "Jul",
+      "cons": 0.5,
+      "act": 1.1
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": -0.3,
+      "act": 0.0
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Jul rev. to +0.9%; ex-transport +0.3% vs +0.6% est.",
+     "src": "Census M3",
+     "url": "https://www.census.gov/manufacturing/m3/",
+     "sub": false
+    },
+    {
+     "label": "Factory Orders (MoM)",
+     "p1": {
+      "period": "Jun",
+      "cons": 0.2,
+      "act": -0.3
+     },
+     "p2": {
+      "period": "Jul",
+      "cons": 0.6,
+      "act": 0.9
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Ex-transport +0.6% (Jul)",
+     "src": "Census M3",
+     "url": "https://www.census.gov/manufacturing/m3/",
+     "sub": false
+    },
+    {
+     "label": "ISM Manufacturing PMI",
+     "p1": {
+      "period": "Jul",
+      "cons": 53.9,
+      "act": 55.6
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 55.2,
+      "act": 54.6
+     },
+     "fmt": "idx",
+     "better": "higher",
+     "note": "Prices paid 71.1",
+     "src": "ISM",
+     "url": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/",
+     "sub": false
+    },
+    {
+     "label": "ISM Services PMI",
+     "p1": {
+      "period": "Jul",
+      "cons": 54.5,
+      "act": 54.1
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 54.1,
+      "act": 55.4
+     },
+     "fmt": "idx",
+     "better": "higher",
+     "note": "Prices paid 72.6",
+     "src": "ISM",
+     "url": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/",
+     "sub": false
+    },
+    {
+     "label": "NFIB Small Business Optimism",
+     "p1": {
+      "period": "Jul",
+      "cons": 97.5,
+      "act": 99.8
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 99.3,
+      "act": 98.7
+     },
+     "fmt": "idx",
+     "better": "higher",
+     "note": "Still above 52-yr avg of 98",
+     "src": "NFIB",
+     "url": "https://www.nfib.com/news/monthly_report/sbet/",
+     "sub": false
+    },
+    {
+     "label": "Leading Economic Index (MoM)",
+     "p1": {
+      "period": "Jul",
+      "cons": null,
+      "act": 0.2
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": null,
+      "act": -0.1
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "First decline since March",
+     "src": "Conference Board",
+     "url": "https://www.conference-board.org/topics/us-leading-indicators",
+     "sub": false
+    },
+    {
+     "label": "Construction Spending (MoM)",
+     "p1": {
+      "period": "Jun",
+      "cons": 0.2,
+      "act": -0.1
+     },
+     "p2": {
+      "period": "Jul",
+      "cons": 0.0,
+      "act": -0.5
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Lowest level since Oct-2023",
+     "src": "Census C30",
+     "url": "https://www.census.gov/construction/c30/current/index.html",
+     "sub": false
+    }
+   ]
+  },
+  {
+   "title": "Housing Market",
+   "rows": [
+    {
+     "label": "NAHB Housing Market Index",
+     "p1": {
+      "period": "Aug",
+      "cons": 33,
+      "act": 35
+     },
+     "p2": {
+      "period": "Sep",
+      "cons": 34,
+      "act": 32
+     },
+     "fmt": "int",
+     "better": "higher",
+     "note": "One-year low; 38% of builders cutting prices",
+     "src": "NAHB",
+     "url": "https://www.nahb.org/news-and-economics/housing-economics/indices/housing-market-index",
+     "sub": false
+    },
+    {
+     "label": "Housing Starts (000s)",
+     "p1": {
+      "period": "Jul",
+      "cons": 1345,
+      "act": 1239
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 1320,
+      "act": 1275
+     },
+     "fmt": "k",
+     "better": "higher",
+     "note": "",
+     "src": "Census NRC",
+     "url": "https://www.census.gov/construction/nrc/current/index.html",
+     "sub": false
+    },
+    {
+     "label": "% Month over Month",
+     "p1": {
+      "period": "Jul",
+      "cons": null,
+      "act": -12.4
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": null,
+      "act": -2.6
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "",
+     "src": "Census NRC",
+     "url": "https://www.census.gov/construction/nrc/current/index.html",
+     "sub": true
+    },
+    {
+     "label": "Building Permits (000s)",
+     "p1": {
+      "period": "Jul",
+      "cons": 1375,
+      "act": 1443
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 1408,
+      "act": 1394
+     },
+     "fmt": "k",
+     "better": "higher",
+     "note": "",
+     "src": "Census NRC",
+     "url": "https://www.census.gov/construction/nrc/current/index.html",
+     "sub": false
+    },
+    {
+     "label": "% Month over Month",
+     "p1": {
+      "period": "Jul",
+      "cons": null,
+      "act": 5.0
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": null,
+      "act": -2.7
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "",
+     "src": "Census NRC",
+     "url": "https://www.census.gov/construction/nrc/current/index.html",
+     "sub": true
+    },
+    {
+     "label": "Existing Home Sales (mil.)",
+     "p1": {
+      "period": "Jul",
+      "cons": 4.05,
+      "act": 4.06
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 3.98,
+      "act": 3.98
+     },
+     "fmt": "m",
+     "better": "higher",
+     "note": "Median price $429,100 (+1.6% YoY)",
+     "src": "NAR",
+     "url": "https://www.nar.realtor/research-and-statistics/housing-statistics/existing-home-sales",
+     "sub": false
+    },
+    {
+     "label": "% Month over Month",
+     "p1": {
+      "period": "Jul",
+      "cons": null,
+      "act": -1.7
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": null,
+      "act": -2.0
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "",
+     "src": "NAR",
+     "url": "https://www.nar.realtor/research-and-statistics/housing-statistics/existing-home-sales",
+     "sub": true
+    },
+    {
+     "label": "Pending Home Sales (MoM)",
+     "p1": {
+      "period": "Jul",
+      "cons": 0.3,
+      "act": -2.3
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": -0.6,
+      "act": 0.3
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Consensus: Reuters; \u22124.7% YoY",
+     "src": "NAR",
+     "url": "https://www.nar.realtor/research-and-statistics/housing-statistics/pending-home-sales",
+     "sub": false
+    },
+    {
+     "label": "New Home Sales (000s)",
+     "p1": {
+      "period": "Jul",
+      "cons": 620,
+      "act": 607
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 618,
+      "act": 684
+     },
+     "fmt": "k",
+     "better": "higher",
+     "note": "Jul rev. to 643K; fastest pace of 2026",
+     "src": "Census NRS",
+     "url": "https://www.census.gov/construction/nrs/current/index.html",
+     "sub": false
+    },
+    {
+     "label": "% Month over Month",
+     "p1": {
+      "period": "Jul",
+      "cons": null,
+      "act": -10.5
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": null,
+      "act": 6.4
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Jul rev. to \u22124.3%",
+     "src": "Census NRS",
+     "url": "https://www.census.gov/construction/nrs/current/index.html",
+     "sub": true
+    },
+    {
+     "label": "Case-Shiller 20-City (YoY, NSA)",
+     "p1": {
+      "period": "May",
+      "cons": null,
+      "act": 1.6
+     },
+     "p2": {
+      "period": "Jun",
+      "cons": null,
+      "act": 2.1
+     },
+     "fmt": "pct",
+     "better": "higher",
+     "note": "Computed from S&P CoreLogic index via FRED",
+     "src": "S&P DJI",
+     "url": "https://www.spglobal.com/spdji/en/index-family/indicators/sp-corelogic-case-shiller/",
+     "sub": false
+    },
+    {
+     "label": "Freddie Mac 30-Yr Mortgage",
+     "p1": {
+      "period": "9/17",
+      "cons": null,
+      "act": 6.95
+     },
+     "p2": {
+      "period": "9/24",
+      "cons": null,
+      "act": 7.03
+     },
+     "fmt": "pct2",
+     "better": "none",
+     "note": "15-yr 6.42%; 30-yr 6.30% a year ago",
+     "src": "Freddie Mac PMMS",
+     "url": "https://www.freddiemac.com/pmms",
+     "sub": false
+    }
+   ]
+  },
+  {
+   "title": "Inflation",
+   "rows": [
+    {
+     "label": "CPI (MoM)",
+     "p1": {
+      "period": "Jul",
+      "cons": 0.1,
+      "act": 0.1
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 0.4,
+      "act": 0.4
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "Gasoline +3.9% in Aug",
+     "src": "BLS CPI",
+     "url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+     "sub": false
+    },
+    {
+     "label": "CPI (YoY)",
+     "p1": {
+      "period": "Jul",
+      "cons": 3.4,
+      "act": 3.4
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 3.3,
+      "act": 3.4
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "Aug YoY consensus: FactSet median",
+     "src": "BLS CPI",
+     "url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+     "sub": false
+    },
+    {
+     "label": "Ex Food & Energy (MoM)",
+     "p1": {
+      "period": "Jul",
+      "cons": 0.2,
+      "act": 0.2
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 0.2,
+      "act": 0.3
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "",
+     "src": "BLS CPI",
+     "url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+     "sub": true
+    },
+    {
+     "label": "Ex Food & Energy (YoY)",
+     "p1": {
+      "period": "Jul",
+      "cons": 2.5,
+      "act": 2.5
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 2.4,
+      "act": 2.4
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "Lowest since Mar-2021",
+     "src": "BLS CPI",
+     "url": "https://www.bls.gov/news.release/cpi.nr0.htm",
+     "sub": true
+    },
+    {
+     "label": "PPI Final Demand (MoM)",
+     "p1": {
+      "period": "Jul",
+      "cons": 0.2,
+      "act": 0.0
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 0.4,
+      "act": 0.4
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "Jul revised to +0.1%",
+     "src": "BLS PPI",
+     "url": "https://www.bls.gov/news.release/ppi.nr0.htm",
+     "sub": false
+    },
+    {
+     "label": "PPI Final Demand (YoY)",
+     "p1": {
+      "period": "Jul",
+      "cons": 4.9,
+      "act": 4.7
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 5.3,
+      "act": 5.4
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "Energy +24% YoY",
+     "src": "BLS PPI",
+     "url": "https://www.bls.gov/news.release/ppi.nr0.htm",
+     "sub": false
+    },
+    {
+     "label": "Ex Food & Energy (MoM)",
+     "p1": {
+      "period": "Jul",
+      "cons": 0.3,
+      "act": 0.2
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 0.3,
+      "act": 0.2
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "",
+     "src": "BLS PPI",
+     "url": "https://www.bls.gov/news.release/ppi.nr0.htm",
+     "sub": true
+    },
+    {
+     "label": "Ex Food & Energy (YoY)",
+     "p1": {
+      "period": "Jul",
+      "cons": 4.2,
+      "act": 4.2
+     },
+     "p2": {
+      "period": "Aug",
+      "cons": 4.6,
+      "act": 4.6
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "",
+     "src": "BLS PPI",
+     "url": "https://www.bls.gov/news.release/ppi.nr0.htm",
+     "sub": true
+    },
+    {
+     "label": "Core PCE (YoY)",
+     "p1": {
+      "period": "Jun",
+      "cons": null,
+      "act": 3.3
+     },
+     "p2": {
+      "period": "Jul",
+      "cons": null,
+      "act": 3.3
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "Headline PCE 3.7% (Jul)",
+     "src": "BEA PI&O",
+     "url": "https://www.bea.gov/data/personal-consumption-expenditures-price-index-excluding-food-and-energy",
+     "sub": false
+    },
+    {
+     "label": "Core PCE (QoQ SAAR)",
+     "p1": {
+      "period": "Q1",
+      "cons": null,
+      "act": 4.4
+     },
+     "p2": {
+      "period": "Q2",
+      "cons": null,
+      "act": 3.6
+     },
+     "fmt": "pct",
+     "better": "lower",
+     "note": "Current vintage; Q2 advance print was 3.4%",
+     "src": "BEA NIPA",
+     "url": "https://www.bea.gov/data/gdp/gross-domestic-product",
+     "sub": false
+    }
+   ]
+  }
+ ],
+ "kpis": [
+  {
+   "label": "Nonfarm payrolls \u00b7 Aug",
+   "value": "+162K",
+   "tone": "up",
+   "detail": "vs +55K consensus"
+  },
+  {
+   "label": "CPI YoY \u00b7 Aug",
+   "value": "3.4%",
+   "tone": "dn",
+   "detail": "core 2.4%, core MoM 0.3% hot"
+  },
+  {
+   "label": "Fed funds target",
+   "value": "3.75\u20134.00%",
+   "tone": "dn",
+   "detail": "+25 bp hike on Sep 16"
+  },
+  {
+   "label": "JOLTS openings \u00b7 Aug",
+   "value": "7,079K",
+   "tone": "dn",
+   "detail": "vs 7,225K consensus"
+  },
+  {
+   "label": "S&P 500",
+   "value": "7,670.84",
+   "tone": "up",
+   "detail": "+12.1% YTD"
+  },
+  {
+   "label": "10-yr Treasury",
+   "value": "5.24%",
+   "tone": "dn",
+   "detail": "+106 bp YTD"
+  }
+ ],
+ "gdp": {
+  "years": {
+   "2025": [
+    -0.6,
+    3.8,
+    4.4,
+    0.5
+   ],
+   "2026": [
+    2.1,
+    1.5,
+    null,
+    null
+   ]
+  },
+  "gdpnow": {
+   "q": "Q3 2026",
+   "value": 5.0
+  },
+  "note": "Real GDP, QoQ SAAR, current vintage. 2026 Q2 = second estimate (third estimate released Sep 30, after this edition\u2019s cutoff). GDPNow = Atlanta Fed nowcast as of Sep 25.",
+  "ulc": {
+   "Q1 2026": 1.3,
+   "Q2 2026": 1.2
+  },
+  "eci": {
+   "Q1 2026": 0.9,
+   "Q2 2026": 0.9
+  }
+ },
+ "imf": {
+  "edition": "July 2026 WEO Update",
+  "rows": [
+   [
+    "2026",
+    2.3,
+    3.0
+   ],
+   [
+    "2027",
+    2.2,
+    3.4
+   ]
+  ]
+ },
+ "ms": {
+  "sp_ye26": "8,000",
+  "sp_mid27": "8,300",
+  "eps26": "$339",
+  "eps27": "$380",
+  "pe": "22.9x",
+  "asof": "Targets set May 13, 2026",
+  "note": "Per public press reporting of Morgan Stanley research; MS GDP and 10-yr targets are not publicly reported \u2014 confirm against internal research before client use."
+ },
+ "markets": {
+  "rows": [
+   [
+    "S&P 500",
+    "7,670.84",
+    16.4,
+    12.1
+   ],
+   [
+    "Dow Jones",
+    "51,349.92",
+    13.0,
+    6.8
+   ],
+   [
+    "NASDAQ Comp.",
+    "26,797.54",
+    20.4,
+    15.3
+   ],
+   [
+    "EAFE (EFA)",
+    "$104.54",
+    27.0,
+    8.9
+   ],
+   [
+    "Emerging Mkts (EEM)",
+    "$67.40",
+    30.8,
+    23.2
+   ]
+  ],
+  "rates": [
+   [
+    "10-Yr Treasury",
+    4.18,
+    5.24
+   ],
+   [
+    "30-Yr Treasury",
+    4.84,
+    5.56
+   ]
+  ],
+  "note": "Price returns. Treasury yields: end-2025 vs Sep 28, 2026 (constant maturity)."
+ },
+ "watch": [
+  [
+   "Fri 10/2",
+   "Employment Situation, September"
+  ],
+  [
+   "Fri 10/9",
+   "UMich sentiment, October prelim."
+  ],
+  [
+   "Wed 10/14",
+   "CPI, September"
+  ],
+  [
+   "Thu 10/15",
+   "PPI, September"
+  ],
+  [
+   "Thu 10/29",
+   "GDP Q3 advance; personal income & outlays, Sep"
+  ],
+  [
+   "Fri 10/30",
+   "Employment Cost Index, Q3"
+  ]
+ ],
+ "story": "Rates are doing the talking. The 10-yr Treasury climbed to 5.24% (+106 bp YTD) and the 30-yr mortgage rate crossed 7% (7.03%) in the two weeks after the Fed's Sep 16 hike, and the S&P 500 slipped to +12.1% YTD. The labor data stayed firm at the front end \u2014 initial claims fell to 197K, beating the 201K consensus \u2014 but demand for workers cooled: JOLTS openings dropped to 7,079K against 7,225K expected. Housing sent mixed signals: new home sales jumped 6.4% to 684K, far above the 618K consensus, and pending sales edged up 0.3%, while final September sentiment slipped to a four-month low of 48.1 with year-ahead inflation expectations at 4.6%. Durable goods orders were flat, a touch better than the \u22120.3% expected.",
+ "consensus_policy": "Consensus = Bloomberg survey median as reported in First Trust Data Watch; Dow Jones, LSEG, Reuters or FactSet where noted or where Bloomberg is not public. Where only a published forecast range exists, the range is shown (source in Notes). \u201c\u2014\u201d = no public consensus.",
+ "actuals_policy": "Actual = value as first published on release day (ALFRED vintage), cross-checked against the agency release. Later revisions appear in Notes.",
+ "status": "draft",
+ "draft_meta": {
+  "based_on": "2026-09-23",
+  "generated": "2026-09-30T16:06:24+00:00",
+  "todo": [
+   "KPI strip (6 tiles): update values, details and up/dn tone for this week's headline prints",
+   "Story: rewrite 'The week in one paragraph'",
+   "On deck: replace with confirmed release dates from agency calendars only",
+   "GDP block: check for a new GDP estimate, GDPNow, ULC, ECI",
+   "Forecasts & Targets: check IMF WEO / Morgan Stanley (public press only; keep the caveat)",
+   "Markets: spot-check the refreshed levels and the S&P/10-yr KPI tiles"
+  ]
+ }
+}
