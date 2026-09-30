@@ -42,11 +42,7 @@
      "note": "Wk 9/5 rev. to 1,717K",
      "src": "DOL ETA",
      "url": "https://www.dol.gov/ui/data.pdf",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "No named-source consensus found for wk 9/12 (Reuters 9/24 story gives none; FT publishes no claims Data Watch) \u2014 left null"
-     ]
+     "sub": false
     },
     {
      "label": "ADP Private Employment (000s)",
@@ -1054,18 +1050,5 @@
  ],
  "story": "Rates are doing the talking. The 10-yr Treasury climbed to 5.24% (+106 bp YTD) and the 30-yr mortgage rate crossed 7% (7.03%) in the two weeks after the Fed's Sep 16 hike, and the S&P 500 slipped to +12.1% YTD. The labor data stayed firm at the front end \u2014 initial claims fell to 197K, beating the 201K consensus \u2014 but demand for workers cooled: JOLTS openings dropped to 7,079K against 7,225K expected. Housing sent mixed signals: new home sales jumped 6.4% to 684K, far above the 618K consensus, and pending sales edged up 0.3%, while final September sentiment slipped to a four-month low of 48.1 with year-ahead inflation expectations at 4.6%. Durable goods orders were flat, a touch better than the \u22120.3% expected.",
  "consensus_policy": "Consensus = Bloomberg survey median as reported in First Trust Data Watch; Dow Jones, LSEG, Reuters or FactSet where noted or where Bloomberg is not public. Where only a published forecast range exists, the range is shown (source in Notes). \u201c\u2014\u201d = no public consensus.",
- "actuals_policy": "Actual = value as first published on release day (ALFRED vintage), cross-checked against the agency release. Later revisions appear in Notes.",
- "status": "draft",
- "draft_meta": {
-  "based_on": "2026-09-23",
-  "generated": "2026-09-30T16:06:24+00:00",
-  "todo": [
-   "KPI strip (6 tiles): update values, details and up/dn tone for this week's headline prints",
-   "Story: rewrite 'The week in one paragraph'",
-   "On deck: replace with confirmed release dates from agency calendars only",
-   "GDP block: check for a new GDP estimate, GDPNow, ULC, ECI",
-   "Forecasts & Targets: check IMF WEO / Morgan Stanley (public press only; keep the caveat)",
-   "Markets: spot-check the refreshed levels and the S&P/10-yr KPI tiles"
-  ]
- }
+ "actuals_policy": "Actual = value as first published on release day (ALFRED vintage), cross-checked against the agency release. Later revisions appear in Notes."
 }
