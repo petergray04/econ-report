@@ -232,16 +232,27 @@ class Fetcher:
         cur = self.current_series(spec.sid, start)
         return sorted(cur)[-n:]
 
-    def prints(self, spec, obs_dates):
-        """Print for each observation date (first print unless spec.mode == 'current')."""
+    def prints(self, spec, obs_dates, as_of=None):
+        """Print for each observation date (first print unless spec.mode == 'current').
+
+        as_of (YYYY-MM-DD): for mode='current' rows, use the vintage as it stood on that date
+        instead of today's. Re-checking a past edition needs this, because a 'current' row
+        (e.g. Core PCE QoQ) legitimately moves when the agency revises it later.
+        """
         start = self._start(obs_dates)
         cur = self.current_series(spec.sid, start)
         freq = infer_freq(cur)
         out = []
         if spec.mode == "current":
+            shown = cur
+            if as_of and as_of < dt.date.today().isoformat():
+                if self.fred.key:
+                    shown = snapshot(self.fred.vintages(spec.sid, start), as_of)
+                else:
+                    shown = self.fred.as_of_sampled(spec.sid, as_of, start) or {}
             for o in obs_dates:
-                v = transform(cur, o, spec.kind, spec.scale, freq)
-                out.append(Print(o, None, v, v, freq))
+                out.append(Print(o, None, transform(shown, o, spec.kind, spec.scale, freq),
+                                 transform(cur, o, spec.kind, spec.scale, freq), freq))
             return out
         if self.fred.key:
             if (spec.sid, start) not in self._hist:

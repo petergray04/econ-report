@@ -87,7 +87,9 @@ def check(fetcher, data_path):
             if key in ROWS:
                 obs = [period_to_obs(r[p]["period"], d["edition"]) for p in ("p1", "p2")]
                 targets.append((key, r, obs))
-    res = run_parallel({key: (lambda s=ROWS[key], o=obs: fetcher.prints(s, o)) for key, r, obs in targets})
+    # 'current'-vintage rows are checked as of the edition date (they may have been revised since)
+    res = run_parallel({key: (lambda s=ROWS[key], o=obs: fetcher.prints(s, o, as_of=d["edition"]))
+                        for key, r, obs in targets})
     bad = 0
     print(f"{'row':52} {'period':8} {'published':>10} {'fetched':>10} {'current':>9}  first published")
     for key, r, obs in targets:
