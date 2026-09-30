@@ -62,7 +62,7 @@ def update_rows(d, fetcher, log):
                 continue
             style = period_style(r["p2"]["period"])
             old_p2_obs = period_to_obs(r["p2"]["period"], edition)
-            latest = fetcher.latest_obs(spec, 2)
+            latest = fetcher.latest_obs(spec, 2, before=edition)
             new = [o for o in latest if old_p2_obs is None or o > old_p2_obs]
             if not new:
                 continue

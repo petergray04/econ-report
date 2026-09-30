@@ -143,7 +143,7 @@ Optional later: a small password-protected "editor" page for entering consensus 
 - [x] The PDF downloads from the site and the archive page lists it.
 - [x] Methodology page exists.
 - [x] `fetch_actuals.py` runs end-to-end without 503 failures and its output matches the verified numbers in `data/2026-09-23.json` for the FRED-covered rows. This is the regression test: e.g. Aug payrolls 162, Aug CPI YoY 3.4, Aug housing starts 1,275.
-- [ ] The scheduled GitHub Action opens a draft PR on a manual trigger (`workflow_dispatch`).
+- [x] The scheduled GitHub Action opens a draft PR on a manual trigger (`workflow_dispatch`). (Verified 2026-09-30: PR #2.)
 - [x] JSON Schema validation runs in CI.
 - [x] `RUNBOOK.md` is updated for the new workflow.
 

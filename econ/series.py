@@ -227,10 +227,20 @@ class Fetcher:
             self._cur[key] = self.fred.current(sid, start)
         return self._cur[key]
 
-    def latest_obs(self, spec, n=2):
+    def latest_obs(self, spec, n=2, before=None):
+        """The n most recent observations, counting only releases published before `before`
+        (YYYY-MM-DD). A draft for date D must not use anything released on or after D."""
         start = add_months(dt.date.today(), -20).isoformat()
-        cur = self.current_series(spec.sid, start)
-        return sorted(cur)[-n:]
+        if before and before <= dt.date.today().isoformat():
+            if self.fred.key:
+                hist = self.fred.vintages(spec.sid, start)
+                obs = [o for o, periods in hist.items()
+                       if any(v is not None and rs < before for rs, _, v in periods)]
+            else:
+                prev_day = (dt.date.fromisoformat(before) - dt.timedelta(days=1)).isoformat()
+                obs = list(self.fred.as_of_sampled(spec.sid, prev_day, start) or {})
+            return sorted(obs)[-n:]
+        return sorted(self.current_series(spec.sid, start))[-n:]
 
     def prints(self, spec, obs_dates, as_of=None):
         """Print for each observation date (first print unless spec.mode == 'current').
