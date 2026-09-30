@@ -25,3 +25,6 @@ td.rng{font-size:7.1px;letter-spacing:-.25px;white-space:nowrap}
 .senti h3{font-size:11.5px}
 .senti .sgrid{gap:14px}
 .fgn{font-size:17px}
+/* explicit line-height: "normal" depends on font metrics and glyph fallback, which differ between
+   macOS and the Linux CI runner (rows came out taller there and pushed the footer to page 3) */
+body{line-height:1.3}
