@@ -64,3 +64,16 @@ def test_null_consensus_is_valid():
     d = copy.deepcopy(REF)
     first_row(d)["p1"]["cons"] = None
     assert schema_errors(d) == [] and publish_issues(d) == []
+
+
+def test_published_range_needs_source_in_notes_and_order():
+    d = copy.deepcopy(REF)
+    first_row(d)["p2"]["cons"] = {"lo": 200, "hi": 215}
+    errors, _ = validate(d, REF_PATH)
+    assert any("Notes must name where the range was published" in e for e in errors)
+    first_row(d)["note"] = "Cons. range: Reuters poll"
+    assert validate(d, REF_PATH)[0] == []
+    first_row(d)["p2"]["cons"] = {"lo": 215, "hi": 200}
+    assert any("lo < hi" in e for e in validate(d, REF_PATH)[0])
+    first_row(d)["p2"]["cons"] = {"lo": 200}
+    assert any("schema" in e for e in validate(d, REF_PATH)[0])

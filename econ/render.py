@@ -3,7 +3,7 @@ import pathlib
 
 from jinja2 import Environment, FileSystemLoader, StrictUndefined, select_autoescape
 
-from .formatting import bp_change, fmt, verdict
+from .formatting import bp_change, fmt, has_range, verdict
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TEMPLATES = ROOT / "templates"
@@ -22,7 +22,7 @@ def env():
     e = Environment(loader=FileSystemLoader(TEMPLATES), autoescape=select_autoescape(["html"]),
                     undefined=StrictUndefined, trim_blocks=False, lstrip_blocks=False)
     e.filters["fmt"] = fmt
-    e.globals.update(verdict=verdict, bp_change=bp_change, pdf_path=pdf_path,
+    e.globals.update(verdict=verdict, has_range=has_range, bp_change=bp_change, pdf_path=pdf_path,
                      site=SITE, fonts_url=FONTS_URL)
     return e
 

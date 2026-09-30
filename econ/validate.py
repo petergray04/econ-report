@@ -57,6 +57,14 @@ def publish_issues(d, filename=None):
         if (r.get("p1") or {}).get("period") == (r.get("p2") or {}).get("period"):
             out.append(f"{where}: prior and latest period are the same ({r['p2']['period']})")
         note = (r.get("note") or "").lower()
+        for key in ("p1", "p2"):
+            c = (r.get(key) or {}).get("cons")
+            if isinstance(c, dict):
+                if "lo" in c and "hi" in c and not c["lo"] < c["hi"]:   # shape errors come from the schema
+                    out.append(f"{where}: {key} consensus range must have lo < hi (got {c['lo']}–{c['hi']})")
+                if "range" not in note:
+                    out.append(f"{where}: {key} consensus is a range — Notes must name where the range was "
+                               "published (e.g. 'Cons. range: Reuters poll')")
         if "no public consensus" in note and any((r.get(k) or {}).get("cons") is not None for k in ("p1", "p2")):
             out.append(f'{where}: note says "no public consensus" but a consensus value is filled in')
     return out

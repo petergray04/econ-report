@@ -25,6 +25,9 @@ YEAR_END = "2025-12-31"        # returns are measured from the end-2025 close
 INDEXES = {"S&P 500": "SP500", "Dow Jones": "DJIA", "NASDAQ Comp.": "NASDAQCOM"}
 ETFS = {"EAFE (EFA)": "EFA", "Emerging Mkts (EEM)": "EEM"}
 RATES = {"10-Yr Treasury": "DGS10", "30-Yr Treasury": "DGS30"}
+CONSENSUS_POLICY = ("Consensus = Bloomberg survey median as reported in First Trust Data Watch; Dow Jones, LSEG, "
+                    "Reuters or FactSet where noted or where Bloomberg is not public. Where only a published "
+                    "forecast range exists, the range is shown (source in Notes). \u201c\u2014\u201d = no public consensus.")
 
 
 def next_monday(today=None):
@@ -88,7 +91,7 @@ def update_rows(d, fetcher, log):
             r["p1"] = prior
             r["p2"] = {"period": period_label(p.obs, p.freq, style), "cons": None, "act": first}
             flag(r, f"consensus for {r['p2']['period']} (Bloomberg via First Trust Data Watch → DJ/LSEG/FactSet "
-                    "named in Notes → leave null)", "update Notes for the new release")
+                    "named in Notes → published range {lo, hi} with source in Notes → leave null)", "update Notes for the new release")
             if first is None:
                 flag(r, f"first print for {r['p2']['period']} not available from ALFRED — enter from the agency release")
             log.append(f"{key}: new {r['p2']['period']} = {first} (first published {p.release or 'n/a'})")
@@ -163,6 +166,7 @@ def make_draft(prev, date, fred=None):
     d["edition"] = date.isoformat()
     d["edition_label"] = edition_label(date)
     d["status"] = "draft"
+    d["consensus_policy"] = CONSENSUS_POLICY
     log, todo = [], []
     update_rows(d, fetcher, log)
     update_markets(d, fetcher, date, todo, log)
@@ -194,7 +198,8 @@ def pr_body(d, prev_path, log):
              "1. Work through the rows below in `data/" + d["edition"] + ".json`. When a row is done, delete its "
              "`needs_review` and `review` keys.",
              "2. Consensus policy: Bloomberg median via First Trust Data Watch → Dow Jones / LSEG / FactSet "
-             "(name it in Notes) → otherwise leave `null` (renders “—”). **Never estimate.**",
+             "(name it in Notes) → a forecast range a named source published, as `{\"lo\": x, \"hi\": y}` "
+             "(Notes: `Cons. range: <source>`) → otherwise leave `null` (renders “—”). **Never estimate.**",
              "3. Run `python draft_edition.py --finalize data/" + d["edition"] + ".json`, then `make build` "
              "and check the PDF is still 2 pages.",
              "4. Push to this branch and merge. The merge deploys the site.", ""]

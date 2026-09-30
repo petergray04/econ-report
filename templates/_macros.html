@@ -9,7 +9,7 @@
 <tbody>
 {%- for r in sec.rows %}
 <tr class="{{ 'sub' if r.sub else '' }}"><th scope="row">{{ r.label }}</th>
-{%- for p in (r.p1, r.p2) %}<td class="per">{{ p.period }}</td><td class="num">{{ p.cons | fmt(r.fmt) }}</td><td class="num act {{ verdict(r, p) }}">{{ p.act | fmt(r.fmt) }}</td>{% endfor -%}
+{%- for p in (r.p1, r.p2) %}<td class="per">{{ p.period }}</td><td class="num{{ ' rng' if p.cons is mapping }}">{{ p.cons | fmt(r.fmt) }}</td><td class="num act {{ verdict(r, p) }}">{{ p.act | fmt(r.fmt) }}</td>{% endfor -%}
 <td class="note">{{ r.note }}</td><td class="src">{% if r.url %}<a href="{{ r.url }}">{{ r.src }}</a>{% else %}{{ r.src }}{% endif %}</td></tr>
 {%- endfor %}
 </tbody></table></div></section>
@@ -65,5 +65,5 @@ ECI (QoQ) — {% for k, v in g.eci.items() %}{{ k }}: {{ '%.1f' | format(v) }}%{
 {%- endmacro %}
 
 {% macro method(d) -%}
-<p class="method"><b>Method.</b> {{ d.actuals_policy }} {{ d.consensus_policy }} <span class="beat">Green</span> = better than consensus; <span class="miss">rust</span> = worse (for inflation, claims and unemployment, lower is better). Not investment advice.</p>
+<p class="method"><b>Method.</b> {{ d.actuals_policy }} {{ d.consensus_policy }} <span class="beat">Green</span> = better than consensus; <span class="miss">rust</span> = worse (for inflation, claims and unemployment, lower is better).{% if has_range(d) %} Against a published forecast range, only actuals outside the range are colored.{% endif %} Not investment advice.</p>
 {%- endmacro %}

@@ -94,3 +94,27 @@ def test_no_claude_artifact_leftovers():
     html = render("edition.html", d=REF, archive=archive_entries([REF]), latest=REF, root="", is_latest=True)
     assert "window.claude" not in html and "/_blob/" not in html
     assert 'href="pdfs/Economic_Report_2026-09-23.pdf" download' in html
+
+
+def test_consensus_ranges_format_and_color():
+    from econ.formatting import fmt, verdict
+    assert fmt({"lo": 3.2, "hi": 3.5}, "pct") == "3.2–3.5%"
+    assert fmt({"lo": 1320, "hi": 1345}, "k") == "1,320–1,345"
+    assert fmt({"lo": -0.1, "hi": 0.2}, "pct") == "−0.1–0.2%"
+    assert fmt({"lo": -39, "hi": -7}, "k") == "−39 to −7"
+    lower = {"better": "lower"}
+    rng = {"lo": 3.2, "hi": 3.5}
+    assert [verdict(lower, {"cons": rng, "act": a}) for a in (3.1, 3.2, 3.4, 3.5, 3.6)] == \
+        ["beat", "", "", "", "miss"]
+    assert verdict({"better": "higher"}, {"cons": rng, "act": 3.6}) == "beat"
+
+
+def test_range_renders_in_table():
+    import copy
+    d = copy.deepcopy(REF)
+    row = d["sections"][0]["rows"][3]          # Nonfarm Payrolls
+    row["p2"]["cons"] = {"lo": 40, "hi": 90}
+    html = render("edition.html", d=d, archive=archive_entries([d]), latest=d, root="", is_latest=True)
+    cells = {c[0]: c for c, _ in parse(html)}
+    assert cells["Nonfarm Payrolls (000s)"][5] == "40–90"
+    assert 'class="num rng">40–90<' in html

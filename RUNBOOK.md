@@ -7,13 +7,17 @@ Site: https://petergray04.github.io/econ-report/ · Repo: https://github.com/pet
 ## How it works
 
 ```
-Mon 10:00 UTC (6:00 ET)   GitHub Action "Monday draft"
+Mon 12:00 UTC (8:00 ET)   Claude routine (skill: .claude/skills/weekly-econ-edition)
                           ├─ health check: fetcher reproduces the verified 2026-09-23 edition
-                          ├─ data/<Monday>.json drafted from last edition + FRED/ALFRED + markets
-                          └─ opens a draft PR with a checklist of everything that needs you
-You                       fill consensus + manual rows, finalize, push to the PR branch
+                          ├─ drafts data/<Monday>.json (FRED first prints + markets)
+                          ├─ researches every consensus + manual row from named sources (ranges only if published)
+                          ├─ writes KPIs, story, On deck; builds; checks the PDF is 2 pages
+                          └─ opens a PR with a source log for every number it entered
+You (≈5–10 min)           skim the source log, fix anything flagged, merge
 Merge to main             GitHub Action "Build and deploy": tests → validate → build PDF + pages → GitHub Pages
 ```
+
+Fallback if the routine doesn't run: Actions → **Monday draft** → Run workflow. It opens a draft PR with FRED numbers only, and you then do steps 2–4 below by hand.
 
 Nothing is published until you merge. A file with `"status": "draft"` is never built or deployed. The deploy fails if any row still has `needs_review`, is missing a source, or if the PDF is not exactly 2 pages.
 
@@ -63,7 +67,8 @@ You can also trigger it from GitHub: Actions → Monday draft → Run workflow.
 Consensus policy, in order of preference:
 1. **Bloomberg median.** First Trust Data Watch quotes it in its first bullet ("…versus the consensus expected …"). See ftportfolios.com → Commentary → Economic Research.
 2. **Dow Jones** (CNBC), **Reuters/LSEG** or **FactSet**, if Bloomberg isn't quoted. Name the source in Notes.
-3. Otherwise **`null`**, which renders as "—". **Never estimate.**
+3. A **published forecast range**, if a named source reported one ("estimates ranged from 3.2% to 3.5%"). Enter it as `"cons": {"lo": 3.2, "hi": 3.5}` and add `Cons. range: <source>` to Notes. The validator refuses a range without that note.
+4. Otherwise **`null`**, which renders as "—". **Never estimate** a number or a range.
 
 For a manual row with a new release: move `p2` into `p1`, then fill the new `p2` (`period`, `cons`, `act`).
 

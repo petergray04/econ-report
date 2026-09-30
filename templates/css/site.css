@@ -62,3 +62,4 @@ table.mini th,table.mini td{font-size:12.5px;padding:4px 6px}table.mini thead th
 .sitefoot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:40px;padding-top:12px;border-top:1px solid var(--rule);font-size:12px;color:var(--muted)}
 .mast p a{font-weight:600}
 @media(max-width:880px){.wrap{padding:18px 16px 40px}.archive.full li{align-items:flex-start}}
+td.rng{white-space:nowrap}

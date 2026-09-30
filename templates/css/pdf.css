@@ -20,3 +20,4 @@ table.mini th,table.mini td{padding:1.5px 4px;font-size:9px}
 .pagefoot{margin-top:5px}
 .method{font-size:7.4px;margin:6px 0 0}
 .pagefoot{display:flex;justify-content:space-between;font-size:8px;color:var(--muted);border-top:1px solid var(--rule);margin-top:8px;padding-top:4px}
+td.rng{font-size:7.1px;letter-spacing:-.25px;white-space:nowrap}

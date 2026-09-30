@@ -1,8 +1,8 @@
 name: Monday draft
 
+# The Monday edition is produced by the Claude routine (.claude/skills/weekly-econ-edition).
+# This workflow is kept as a manual fallback: Actions -> Monday draft -> Run workflow.
 on:
-  schedule:
-    - cron: "0 10 * * 1"      # Mondays 10:00 UTC
   workflow_dispatch:
     inputs:
       date:

@@ -110,7 +110,14 @@
       "required": ["period", "cons", "act"],
       "properties": {
         "period": {"type": "string", "minLength": 1},
-        "cons": {"$ref": "#/$defs/numOrNull", "description": "Consensus. null = no public consensus (rendered '—'). Never estimated."},
+        "cons": {
+          "description": "Consensus: a number (survey median), a published forecast range {lo, hi} (source named in Notes), or null = no public consensus (rendered '—'). Never estimated.",
+          "oneOf": [
+            {"type": ["number", "null"]},
+            {"type": "object", "additionalProperties": false, "required": ["lo", "hi"],
+             "properties": {"lo": {"type": "number"}, "hi": {"type": "number"}}}
+          ]
+        },
         "act": {"$ref": "#/$defs/numOrNull", "description": "First print. null only allowed in drafts."}
       }
     },
