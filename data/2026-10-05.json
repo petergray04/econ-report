@@ -156,11 +156,7 @@
      "note": "Consensus: Reuters; 1-yr infl. exp. 4.6%, long-run 3.4%",
      "src": "UMich SCA",
      "url": "https://www.sca.isr.umich.edu/",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (UMich SCA (sca.isr.umich.edu) \u2014 prelim 2nd Fri, final 4th Fri); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": false
     },
     {
      "label": "JOLTS Job Openings (000s)",
@@ -214,21 +210,15 @@
      },
      "p2": {
       "period": "Aug",
-      "cons": null,
+      "cons": 0.5,
       "act": 0.2
      },
      "fmt": "pct",
      "better": "higher",
-     "note": "Saving rate 3.0% (Jul)",
+     "note": "Jul rev. to +0.3%; saving rate 4.1% (Aug)",
      "src": "BEA PI&O",
      "url": "https://www.bea.gov/data/income-saving/personal-income",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Jul revised from 0.4 to 0.3 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Aug (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "Personal Spending (MoM)",
@@ -239,21 +229,15 @@
      },
      "p2": {
       "period": "Aug",
-      "cons": null,
+      "cons": 0.9,
       "act": 0.9
      },
      "fmt": "pct",
      "better": "higher",
-     "note": "Real PCE flat in Jul",
+     "note": "Jul rev. to +0.1%; real PCE +0.6% (Aug)",
      "src": "BEA PI&O",
      "url": "https://www.bea.gov/data/income-saving/personal-income",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Jul revised from 0.2 to 0.1 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Aug (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "Retail Sales (MoM)",
@@ -291,11 +275,7 @@
      "note": "Ex-autos Aug +1.4% vs +0.6% est.",
      "src": "Census MARTS",
      "url": "https://www.census.gov/retail/sales.html",
-     "sub": true,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (Census MARTS release table); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": true
     }
    ]
   },
@@ -368,44 +348,34 @@
      },
      "p2": {
       "period": "Aug",
-      "cons": null,
+      "cons": 0.1,
       "act": 0.1
      },
      "fmt": "pct",
      "better": "higher",
-     "note": "Ex-transport +0.6% (Jul)",
+     "note": "Consensus: Reuters; Jul rev. to +0.8%",
      "src": "Census M3",
      "url": "https://www.census.gov/manufacturing/m3/",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Jul revised from 0.9 to 0.8 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Aug (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "ISM Manufacturing PMI",
      "p1": {
-      "period": "Jul",
-      "cons": 53.9,
-      "act": 55.6
-     },
-     "p2": {
       "period": "Aug",
       "cons": 55.2,
       "act": 54.6
      },
+     "p2": {
+      "period": "Sep",
+      "cons": 55.0,
+      "act": 54.5
+     },
      "fmt": "idx",
      "better": "higher",
-     "note": "Prices paid 71.1",
+     "note": "Prices paid 77.9 (Aug 71.1)",
      "src": "ISM",
      "url": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (ISM (ismworld.org) \u2014 1st business day); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": false
     },
     {
      "label": "ISM Services PMI",
@@ -424,11 +394,7 @@
      "note": "Prices paid 72.6",
      "src": "ISM",
      "url": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (ISM (ismworld.org) \u2014 3rd business day); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": false
     },
     {
      "label": "NFIB Small Business Optimism",
@@ -447,11 +413,7 @@
      "note": "Still above 52-yr avg of 98",
      "src": "NFIB",
      "url": "https://www.nfib.com/news/monthly_report/sbet/",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (NFIB SBET \u2014 2nd Tue); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": false
     },
     {
      "label": "Leading Economic Index (MoM)",
@@ -470,11 +432,7 @@
      "note": "First decline since March",
      "src": "Conference Board",
      "url": "https://www.conference-board.org/topics/us-leading-indicators",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (Conference Board press release); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": false
     },
     {
      "label": "Construction Spending (MoM)",
@@ -485,21 +443,15 @@
      },
      "p2": {
       "period": "Aug",
-      "cons": null,
+      "cons": 0.0,
       "act": 0.9
      },
      "fmt": "pct",
      "better": "higher",
-     "note": "Lowest level since Oct-2023",
+     "note": "Consensus: Reuters; Jul rev. to \u22120.1%",
      "src": "Census C30",
      "url": "https://www.census.gov/construction/c30/current/index.html",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Jul revised from -0.5 to -0.1 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Aug (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     }
    ]
   },
@@ -523,11 +475,7 @@
      "note": "One-year low; 38% of builders cutting prices",
      "src": "NAHB",
      "url": "https://www.nahb.org/news-and-economics/housing-economics/indices/housing-market-index",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (NAHB HMI \u2014 mid-month); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": false
     },
     {
      "label": "Housing Starts (000s)",
@@ -622,11 +570,7 @@
      "note": "Median price $429,100 (+1.6% YoY)",
      "src": "NAR",
      "url": "https://www.nar.realtor/research-and-statistics/housing-statistics/existing-home-sales",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (NAR release (licensed; not in ALFRED)); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": false
     },
     {
      "label": "% Month over Month",
@@ -645,11 +589,7 @@
      "note": "",
      "src": "NAR",
      "url": "https://www.nar.realtor/research-and-statistics/housing-statistics/existing-home-sales",
-     "sub": true,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (NAR release); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": true
     },
     {
      "label": "Pending Home Sales (MoM)",
@@ -668,11 +608,7 @@
      "note": "Consensus: Reuters; \u22124.7% YoY",
      "src": "NAR",
      "url": "https://www.nar.realtor/research-and-statistics/housing-statistics/pending-home-sales",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "check for a new release since last edition (NAR release); if new, shift latest\u2192prior, enter the actual and consensus"
-     ]
+     "sub": false
     },
     {
      "label": "New Home Sales (000s)",
@@ -726,16 +662,10 @@
      },
      "fmt": "pct",
      "better": "higher",
-     "note": "Computed from S&P CoreLogic index via FRED",
+     "note": "Jun rev. to 2.2%; national +1.9% YoY",
      "src": "S&P DJI",
      "url": "https://www.spglobal.com/spdji/en/index-family/indicators/sp-corelogic-case-shiller/",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Jun revised from 2.1 to 2.2 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Jul (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "Freddie Mac 30-Yr Mortgage",
@@ -751,15 +681,10 @@
      },
      "fmt": "pct2",
      "better": "none",
-     "note": "15-yr 6.42%; 30-yr 6.30% a year ago",
+     "note": "15-yr 6.60%; 30-yr 6.34% a year ago",
      "src": "Freddie Mac PMMS",
      "url": "https://www.freddiemac.com/pmms",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "consensus for 10/1 (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     }
    ]
   },
@@ -927,21 +852,15 @@
      },
      "p2": {
       "period": "Aug",
-      "cons": null,
+      "cons": 3.3,
       "act": 3.0
      },
      "fmt": "pct",
      "better": "lower",
-     "note": "Headline PCE 3.7% (Jul)",
+     "note": "Consensus: LSEG; Jul rev. to 3.0%; headline 3.4% (Aug)",
      "src": "BEA PI&O",
      "url": "https://www.bea.gov/data/personal-consumption-expenditures-price-index-excluding-food-and-energy",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Jul revised from 3.3 to 3.0 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Aug (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "Core PCE (QoQ SAAR)",
@@ -967,16 +886,22 @@
  ],
  "kpis": [
   {
-   "label": "Nonfarm payrolls \u00b7 Aug",
-   "value": "+162K",
-   "tone": "up",
-   "detail": "vs +55K consensus"
+   "label": "Nonfarm payrolls \u00b7 Sep",
+   "value": "+29K",
+   "tone": "dn",
+   "detail": "vs +90K consensus; 2-mo rev. \u221260K"
   },
   {
-   "label": "CPI YoY \u00b7 Aug",
-   "value": "3.4%",
+   "label": "Unemployment \u00b7 Sep",
+   "value": "4.2%",
    "tone": "dn",
-   "detail": "core 2.4%, core MoM 0.3% hot"
+   "detail": "vs 4.1% consensus"
+  },
+  {
+   "label": "Core PCE YoY \u00b7 Aug",
+   "value": "3.0%",
+   "tone": "up",
+   "detail": "vs 3.3% consensus"
   },
   {
    "label": "Fed funds target",
@@ -985,16 +910,10 @@
    "detail": "+25 bp hike on Sep 16"
   },
   {
-   "label": "JOLTS openings \u00b7 Aug",
-   "value": "7,079K",
-   "tone": "dn",
-   "detail": "vs 7,225K consensus"
-  },
-  {
    "label": "S&P 500",
-   "value": "7,670.84",
+   "value": "7,722.72",
    "tone": "up",
-   "detail": "+12.1% YTD"
+   "detail": "+12.8% YTD"
   },
   {
    "label": "10-yr Treasury",
@@ -1006,23 +925,23 @@
  "gdp": {
   "years": {
    "2025": [
-    -0.6,
-    3.8,
-    4.4,
-    0.5
+    0.1,
+    4.0,
+    3.9,
+    0.2
    ],
    "2026": [
-    2.1,
-    1.5,
+    2.5,
+    2.2,
     null,
     null
    ]
   },
   "gdpnow": {
    "q": "Q3 2026",
-   "value": 5.0
+   "value": 3.7
   },
-  "note": "Real GDP, QoQ SAAR, current vintage. 2026 Q2 = second estimate (third estimate released Sep 30, after this edition\u2019s cutoff). GDPNow = Atlanta Fed nowcast as of Sep 25.",
+  "note": "Real GDP, QoQ SAAR, current vintage (incl. 2026 annual update). 2026 Q2 = third estimate (Sep 30). GDPNow = Atlanta Fed nowcast as of Oct 1.",
   "ulc": {
    "Q1 2026": 1.3,
    "Q2 2026": 1.2
@@ -1105,10 +1024,6 @@
  },
  "watch": [
   [
-   "Fri 10/2",
-   "Employment Situation, September"
-  ],
-  [
    "Fri 10/9",
    "UMich sentiment, October prelim."
   ],
@@ -1118,18 +1033,22 @@
   ],
   [
    "Thu 10/15",
-   "PPI, September"
+   "PPI and retail sales, September"
+  ],
+  [
+   "Tue 10/20",
+   "Housing starts & permits, September"
+  ],
+  [
+   "Wed 10/28",
+   "FOMC decision (Oct 27\u201328 meeting)"
   ],
   [
    "Thu 10/29",
    "GDP Q3 advance; personal income & outlays, Sep"
-  ],
-  [
-   "Fri 10/30",
-   "Employment Cost Index, Q3"
   ]
  ],
- "story": "Rates are doing the talking. The 10-yr Treasury climbed to 5.24% (+106 bp YTD) and the 30-yr mortgage rate crossed 7% (7.03%) in the two weeks after the Fed's Sep 16 hike, and the S&P 500 slipped to +12.1% YTD. The labor data stayed firm at the front end \u2014 initial claims fell to 197K, beating the 201K consensus \u2014 but demand for workers cooled: JOLTS openings dropped to 7,079K against 7,225K expected. Housing sent mixed signals: new home sales jumped 6.4% to 684K, far above the 618K consensus, and pending sales edged up 0.3%, while final September sentiment slipped to a four-month low of 48.1 with year-ahead inflation expectations at 4.6%. Durable goods orders were flat, a touch better than the \u22120.3% expected.",
+ "story": "Hiring stalled. September payrolls rose just 29K against 90K expected, July and August were revised down a combined 60K, and unemployment ticked up to 4.2% (4.1% expected) \u2014 even as ADP (+90K) and initial claims (197K) looked steadier. Inflation offered relief: core PCE ran 3.0% YoY in August, under the 3.3% consensus, though benchmark revisions also pulled July down to 3.0%. Spending stayed strong (+0.9%) while income lagged (+0.2% vs +0.5%), and annual revisions lifted Q2 GDP to 2.2%. Rates remain the pressure point: the 30-yr mortgage rate jumped to 7.28% and the 10-yr sits at 5.24%, while ISM manufacturing slipped to 54.5 with prices paid surging to 77.9. The S&P 500 is up 12.8% YTD.",
  "consensus_policy": "Consensus = Bloomberg survey median as reported in First Trust Data Watch; Dow Jones, LSEG, Reuters or FactSet where noted or where Bloomberg is not public. Where only a published forecast range exists, the range is shown (source in Notes). \u201c\u2014\u201d = no public consensus.",
  "actuals_policy": "Actual = value as first published on release day (ALFRED vintage), cross-checked against the agency release. Later revisions appear in Notes.",
  "sentiment": {
@@ -1149,19 +1068,5 @@
    "asof": "Oct 2",
    "url": "https://www.cnn.com/markets/fear-and-greed"
   }
- },
- "status": "draft",
- "draft_meta": {
-  "based_on": "2026-09-30",
-  "generated": "2026-10-05T12:26:06+00:00",
-  "todo": [
-   "KPI strip (6 tiles): update values, details and up/dn tone for this week's headline prints",
-   "Story: rewrite 'The week in one paragraph'",
-   "On deck: replace with confirmed release dates from agency calendars only",
-   "GDP block: check for a new GDP estimate, GDPNow, ULC, ECI",
-   "Forecasts & Targets: check IMF WEO / Morgan Stanley (public press only; keep the caveat)",
-   "Markets: spot-check the refreshed levels and the S&P/10-yr KPI tiles",
-   "Sentiment: AAII survey (published Thursdays: bullish/neutral/bearish % + long-term averages, week-ending date) and CNN Fear & Greed (value, label, date). Leave null if not sourced"
-  ]
  }
 }
