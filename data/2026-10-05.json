@@ -15,21 +15,15 @@
      },
      "p2": {
       "period": "Wk 9/26",
-      "cons": null,
+      "cons": 200,
       "act": 197.0
      },
      "fmt": "k",
      "better": "lower",
-     "note": "Consensus: Reuters; wk 9/12 rev. to 198K; 4-wk avg 202.3K",
+     "note": "Consensus: Reuters; wk 9/19 rev. to 198K; 4-wk avg 200K",
      "src": "DOL ETA",
      "url": "https://www.dol.gov/ui/data.pdf",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Wk 9/19 revised from 197 to 198.0 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Wk 9/26 (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "Continuing Claims (000s)",
@@ -45,16 +39,10 @@
      },
      "fmt": "k",
      "better": "lower",
-     "note": "Wk 9/5 rev. to 1,717K",
+     "note": "Wk 9/12 rev. to 1,712K",
      "src": "DOL ETA",
      "url": "https://www.dol.gov/ui/data.pdf",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Wk 9/12 revised from 1719 to 1712.0 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Wk 9/19 (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "ADP Private Employment (000s)",
@@ -65,21 +53,15 @@
      },
      "p2": {
       "period": "Sep",
-      "cons": null,
+      "cons": 70,
       "act": 90.0
      },
      "fmt": "k",
      "better": "higher",
-     "note": "Jul revised to +46K; slowest month since Jan",
+     "note": "Consensus: Reuters; Aug rev. to +36K",
      "src": "ADP NER",
      "url": "https://adpemploymentreport.com/",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Aug revised from 38 to 36.0 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Sep (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "Nonfarm Payrolls (000s)",
@@ -90,21 +72,15 @@
      },
      "p2": {
       "period": "Sep",
-      "cons": null,
+      "cons": 90,
       "act": 29.0
      },
      "fmt": "k",
      "better": "higher",
-     "note": "Jul rev. to +21K; Jun+Jul net +55K revision",
+     "note": "Aug rev. to +133K, Jul to \u221210K; net \u221260K revision",
      "src": "BLS CES",
      "url": "https://www.bls.gov/news.release/empsit.nr0.htm",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "Aug revised from 162 to 133.0 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Sep (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "Private Payrolls",
@@ -115,21 +91,15 @@
      },
      "p2": {
       "period": "Sep",
-      "cons": null,
+      "cons": 85,
       "act": 46.0
      },
      "fmt": "k",
      "better": "higher",
-     "note": "Consensus: LSEG",
+     "note": "Consensus: LSEG; Aug rev. to +89K",
      "src": "BLS CES",
      "url": "https://www.bls.gov/news.release/empsit.nr0.htm",
-     "sub": true,
-     "needs_review": true,
-     "review": [
-      "Aug revised from 127 to 89.0 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Sep (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": true
     },
     {
      "label": "Manufacturing Payrolls",
@@ -140,21 +110,15 @@
      },
      "p2": {
       "period": "Sep",
-      "cons": null,
+      "cons": 10,
       "act": 9.0
      },
      "fmt": "k",
      "better": "higher",
-     "note": "No public consensus",
+     "note": "Consensus: LSEG; Aug rev. to +15K",
      "src": "BLS CES",
      "url": "https://www.bls.gov/news.release/empsit.nr0.htm",
-     "sub": true,
-     "needs_review": true,
-     "review": [
-      "Aug revised from 16 to 15.0 \u2014 mention in Notes (Actual stays the first print)",
-      "consensus for Sep (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": true
     },
     {
      "label": "Unemployment Rate",
@@ -165,20 +129,15 @@
      },
      "p2": {
       "period": "Sep",
-      "cons": null,
+      "cons": 4.1,
       "act": 4.2
      },
      "fmt": "pct1",
      "better": "lower",
-     "note": "U-6 7.7%; participation 61.6% (Aug)",
+     "note": "Consensus: FactSet; U-6 7.6%; participation 61.8%",
      "src": "BLS CPS",
      "url": "https://www.bls.gov/news.release/empsit.nr0.htm",
-     "sub": false,
-     "needs_review": true,
-     "review": [
-      "consensus for Sep (Bloomberg via First Trust Data Watch \u2192 DJ/LSEG/FactSet named in Notes \u2192 published range {lo, hi} with source in Notes \u2192 leave null)",
-      "update Notes for the new release"
-     ]
+     "sub": false
     },
     {
      "label": "UMich Consumer Sentiment",
@@ -1175,13 +1134,13 @@
  "actuals_policy": "Actual = value as first published on release day (ALFRED vintage), cross-checked against the agency release. Later revisions appear in Notes.",
  "sentiment": {
   "aaii": {
-   "week": "",
-   "bull": null,
-   "neutral": null,
-   "bear": null,
-   "avg_bull": null,
-   "avg_neutral": null,
-   "avg_bear": null,
+   "week": "9/30",
+   "bull": 34.6,
+   "neutral": 18.9,
+   "bear": 46.5,
+   "avg_bull": 37.5,
+   "avg_neutral": 31.0,
+   "avg_bear": 31.5,
    "url": "https://www.aaii.com/sentimentsurvey"
   },
   "fear_greed": {
